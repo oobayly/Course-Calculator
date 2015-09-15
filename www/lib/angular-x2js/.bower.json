@@ -22,15 +22,15 @@
   "devDependencies": {
     "angular-mocks": "~1.3.0"
   },
-  "homepage": "https://github.com/cesarbarone/angular-x2js",
+  "homepage": "https://github.com/oobayly/angular-x2js",
   "_release": "0.2.0",
   "_resolution": {
     "type": "version",
     "tag": "0.2.0",
     "commit": "bae1044fbc3afbbd7cf5884bf27209a817527fc4"
   },
-  "_source": "git://github.com/cesarbarone/angular-x2js.git",
+  "_source": "https://github.com/oobayly/angular-x2js.git",
   "_target": "~0.2.0",
-  "_originalSource": "angular-x2js",
+  "_originalSource": "https://github.com/oobayly/angular-x2js.git",
   "_direct": true
 }

@@ -5,7 +5,8 @@
     "ionic": "driftyco/ionic-bower#1.1.0"
   },
   "dependencies": {
-    "angular-x2js": "~0.2.0",
-    "geodesy": "https://github.com/oobayly/geodesy.git#bower-devel"
+    "angular-x2js": "https://github.com/oobayly/angular-x2js.git#~0.2.0",
+    "geodesy": "https://github.com/oobayly/geodesy.git#~1.0.2",
+    "geomagJS": "https://github.com/oobayly/geomagJS.git#~0.9.2015"
   }
 }
