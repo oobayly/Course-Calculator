@@ -1,0 +1,14 @@
+.list.options .item-input .input-label:after {
+  content: ":";
+}
+
+.item-select.item-select-left select {
+  right: auto !important;
+  padding: 13px 45px 15px 0px !important;
+  direction: ltr !important;
+  width: 65% !important;
+}
+
+.info .row:nth-of-type(1) > .col {
+  white-space: nowrap;
+}

@@ -1,0 +1,64 @@
+<ion-modal-view ng-controller="LocationModalCtrl">
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+    </div>
+    <h1 class="title">Enter location</h1>
+  </ion-header-bar>
+
+  <ion-content has-header padding="true">
+    <ion-list>
+      <!-- Mode -->
+      <ion-item class="item-input item-select item-select-left">
+        <ion-label class="input-label">Format</ion-label>
+        <select ng-model="params.mode" ng-options="key as value for (key, value) in modes" ng-change="onModeChange()"></select>
+      </ion-item>
+      
+      <div ng-show="params.showLat">
+        <ion-item class="item-input item-select item-select-left">
+          <ion-label class="input-label">Latitude</ion-label>
+          <select ng-model="params.lat.sign" ng-options="item.sign as item.name for item in hemispheres | filter:{type:'lat'}">
+          </select>
+        </ion-item>
+        <ion-item class="item-input">
+          <ion-label class="input-label">Degrees</ion-label>
+          <input ng-model="params.lat.deg" type="number" min="0" max="359" step="5" placeholder="Degrees"/>
+        </ion-item>
+        <ion-item class="item-input" ng-show="canShowMinutes()">
+          <ion-label class="input-label">Minutes</ion-label>
+          <input ng-model="params.lat.min" type="number" min="0" max="59" step="1" placeholder="Minutes"/>
+        </ion-item>
+        <ion-item class="item-input" ng-show="canShowSeconds()">
+          <ion-label class="input-label">Seconds</ion-label>
+          <input ng-model="params.lat.sec" type="number" min="0" max="59" step="1" placeholder="Seconds"/>
+        </ion-item>
+      </div>
+      
+      <div ng-show="params.showLon">
+        <ion-item class="item-input item-select item-select-left">
+          <ion-label class="input-label">Longitude</ion-label>
+          <select ng-model="params.lon.sign" ng-options="item.sign as item.name for item in hemispheres | filter:{type:'lon'}">
+          </select>
+        </ion-item>
+        <ion-item class="item-input">
+          <ion-label class="input-label">Degrees</ion-label>
+          <input ng-model="params.lon.deg" type="number" min="0" max="359" step="5" placeholder="Degrees"/>
+        </ion-item>
+        <ion-item class="item-input" ng-show="canShowMinutes()">
+          <ion-label class="input-label">Minutes</ion-label>
+          <input ng-model="params.lon.min" type="number" min="0" max="59" step="1" placeholder="Minutes"/>
+        </ion-item>
+        <ion-item class="item-input" ng-show="canShowSeconds()">
+          <ion-label class="input-label">Seconds</ion-label>
+          <input ng-model="params.lon.sec" type="number" min="0" max="59" step="1" placeholder="Seconds"/>
+        </ion-item>
+      </div>
+
+    </ion-list>
+
+    <div class="button-bar button-bar-padded">
+      <button class="button button-block button-stable icon-left ion-close-round" ng-click="doClose()">Cancel</button>
+      <button class="button button-block button-positive icon-left ion-checkmark-round" ng-click="doAccept()">Ok</button>
+    </div>
+  </ion-content>
+  
+</ion-modal-view>

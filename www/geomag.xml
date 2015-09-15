@@ -1,0 +1,28 @@
+<maggridresult>
+    <version>
+        0.5.0.7
+    </version>
+    <result>
+        <date>
+            2015.67945
+        </date>
+        <latitude units="degree">
+            51.74000
+        </latitude>
+        <longitude units="degree">
+            -0.96000
+        </longitude>
+        <elevation units="km">
+            0.00000
+        </elevation>
+        <declination units="degree">
+            -1.10451
+        </declination>
+        <declination_sv units="degree">
+            0.14924
+        </declination_sv>
+        <declination_uncertainty units="degree">
+            0.36941
+        </declination_uncertainty>
+    </result>
+</maggridresult>

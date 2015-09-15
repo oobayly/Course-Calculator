@@ -1,0 +1,76 @@
+<!-- Course -->
+<div class="list card info">
+  <ion-item class="item-divider">Course - {{configuration.course.type.description}}</ion-item>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">Length</div>
+    <div class="col">BRG (&deg;M)</div>
+    <div class="col">TWA</div>
+  </div>
+  <div class="row" ng-repeat="item in course.legs">
+    <div class="col">
+      Leg #{{$index + 1}}
+    </div>
+    <div class="col">
+      {{item.distance | number:0}} m
+    </div>
+    <div class="col">
+      {{(item.bearing - course.declination + 360) % 360 | number:0}}&deg;
+    </div>
+    <div class="col">
+      {{getTWA(item) | number:0}}&deg;
+    </div>
+  </div>
+</div>
+
+<!-- Marks -->
+<div class="list card info options">
+  <ion-item class="item-divider">
+    Marks
+  </ion-item>
+<!--
+  <ion-item class="item-input item-select item-select-left">
+    <ion-label class="input-label">Relative to</ion-label>
+    <select ng-model="navigateFrom">
+      <option ng-bind="position">Current position</option>
+      <option ng-bind="configuration.course.startPosition">Committee vessel</option>
+    </select>
+  </ion-item>
+-->
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">Range</div>
+    <div class="col">BRG (&deg;M)</div>
+    <div class="col">BK-BRG (&deg;M)</div>
+  </div>
+  <div class="row" ng-repeat="item in [course.marks.pin]" ng-show="courses.marks.pin !== course.marks.leeward">
+    <div class="col">
+      {{item.name}}
+    </div>
+    <div class="col">
+      {{getDistance(course.marks.cb.wgs, item.wgs) | number:0}} m
+    </div>
+    <div class="col">
+      {{getBearing(course.marks.cb.wgs, item.wgs) | number: 0}}&deg;
+    </div>
+    <div class="col">
+      {{getBearing(course.marks.cb.wgs, item.wgs, true) | number: 0}}&deg;
+    </div>
+  </div>
+  <div class="row" ng-repeat="item in course.marks.list">
+    <div class="col">
+      {{item.name}}
+    </div>
+    <div class="col">
+      {{getDistance(course.marks.cb.wgs, item.wgs) | number:0}} m
+    </div>
+    <div class="col">
+      {{getBearing(course.marks.cb.wgs, item.wgs) | number: 0}}&deg;
+    </div>
+    <div class="col">
+      {{getBearing(course.marks.cb.wgs, item.wgs, true) | number: 0}}&deg;
+    </div>
+  </div>
+  
+  
+</div>

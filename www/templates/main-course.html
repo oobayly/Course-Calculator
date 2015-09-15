@@ -1,0 +1,83 @@
+<div class="card list options">
+  <ion-item class="item-divider">Course options</ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">Wind (&deg;M)</ion-label>
+    <input ng-model="configuration.course.wind" type="number" min="0" max="359" step="5" placeholder="Wind direction">
+  </ion-item>
+  
+  <!-- Course -->
+  <ion-item class="item-input item-select item-select-left">
+    <ion-label class="input-label">Type</ion-label>
+    <select ng-model="configuration.course.type" ng-options="value as value.description for (key, value) in courses"></select>
+  </ion-item>
+  
+  <!-- Triangle course -->
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.triangle">
+    <ion-label class="input-label">Length (m)</ion-label>
+    <input ng-model="configuration.course.type.params.length" type="number" min="1" step="100" placeholder="Beat length (metres)">
+  </ion-item>
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.triangle">
+    <ion-label class="input-label">Width (m)</ion-label>
+    <input ng-model="configuration.course.type.params.width" type="number" min="1" step="100" placeholder="Course width (metres)">
+  </ion-item>
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.triangle">
+    <ion-label class="input-label">Angle #1 (&deg;)</ion-label>
+    <input ng-model="configuration.course.type.params.angle1" type="number" min="1" max="179" placeholder="1st downwind angle">
+  </ion-item>
+  
+  <!-- Trapezoid course -->
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.trapezoid">
+    <ion-label class="input-label">Length (m)</ion-label>
+    <input ng-model="configuration.course.type.params.length" type="number" min="1" step="100" placeholder="Beat length (metres)">
+  </ion-item>
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.trapezoid">
+    <ion-label class="input-label">Width (m)</ion-label>
+    <input ng-model="configuration.course.type.params.width" type="number" min="1" step="100" placeholder="Course width (metres)">
+  </ion-item>
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.trapezoid">
+    <ion-label class="input-label">Angle #1 (&deg;)</ion-label>
+    <input ng-model="configuration.course.type.params.angle1" type="number" min="1" max="179" placeholder="1st downwind angle">
+  </ion-item>
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.trapezoid">
+    <ion-label class="input-label">Angle #2 (&deg;)</ion-label>
+    <input ng-model="configuration.course.type.params.angle2" type="number" min="1" max="179" placeholder="3rd downwind angle">
+  </ion-item>
+  
+  <!-- Windward-leeward course -->
+  <ion-item class="item-input" ng-show="(configuration.course.type === courses.wl) || (configuration.course.type === courses.wlspreader)">
+    <ion-label class="input-label">Length (m)</ion-label>
+    <input ng-model="configuration.course.type.params.length" type="number" min="1" step="100" placeholder="Beat length (metres)">
+  </ion-item>
+  <ion-item class="item-input" ng-show="configuration.course.type === courses.wlspreader">
+    <ion-label class="input-label">Width (m)</ion-label>
+    <input ng-model="configuration.course.type.params.width" type="number" min="1" step="100" placeholder="Course width (metres)">
+  </ion-item>
+  
+  <!-- Committee boat -->
+  <ion-item class="item-divider item-button-right">
+    <ion-label class="input-label">Committee vessel</ion-label>
+    <div class="buttons">
+      <button class="button icon ion-android-locate" ng-click="doGetLocation()"></button>
+    </div>
+  </ion-item>
+  <ion-item class="item-input item-button-right">
+    <ion-label class="input-label">Declination (&deg;)</ion-label>
+    <input ng-model="configuration.course.declination" type="number" min="-90" max="90" placeholder="Magnetic declination"/>
+    <div class="buttons">
+      <button ng-show="true" class="button icon ion-compass" ng-click="doGetMagneticDeclination()"></button>
+    </div>
+  </ion-item>
+  <ion-item class="item-input" ng-click="doEnterLatitude()">
+    <ion-label class="input-label">Latitude</ion-label>
+    <lat-lon lat="configuration.course.startPosition.lat" format="'dms'"></lat-lon>
+  </ion-item>
+  <ion-item class="item-input" ng-click="doEnterLongitude()">
+    <ion-label class="input-label">Longitude</ion-label>
+    <lat-lon lon="configuration.course.startPosition.lon" format="'dms'"></lat-lon>
+  </ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">% of Beat</ion-label>
+    <input ng-model="configuration.course.startPercentage" type="number" min="0" max="99" placeholder="Distance up beat">
+  </ion-item>
+  
+</div>

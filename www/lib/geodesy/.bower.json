@@ -1,0 +1,60 @@
+{
+  "author": "Chris Veness",
+  "name": "geodesy",
+  "homepage": "http://www.movable-type.co.uk/scripts/latlong.html",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrisveness/geodesy"
+  },
+  "main": [
+    "dms.js",
+    "latlon-ellipsoidal.js",
+    "latlon-spherical.js",
+    "latlon-vectors.js",
+    "latlon-vincenty.js",
+    "mgrs.js",
+    "npm.js",
+    "osgridref.js",
+    "test.js",
+    "utm.js",
+    "vector3d.js"
+  ],
+  "dependencies": {},
+  "authors": [
+    "Chris Veness"
+  ],
+  "description": "Libraries of geodesy functions",
+  "keywords": [
+    "geodesy",
+    "latitude",
+    "longitude",
+    "distance",
+    "bearing",
+    "haversine",
+    "vincenty",
+    "rhumb",
+    "ellipsoid",
+    "datum",
+    "wgs84",
+    "utm",
+    "mgrs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "6362b3b734",
+  "_resolution": {
+    "type": "branch",
+    "branch": "bower-devel",
+    "commit": "6362b3b7346235cb32dfcc7a93c29175b6cfa9c2"
+  },
+  "_source": "https://github.com/oobayly/geodesy.git",
+  "_target": "bower-devel",
+  "_originalSource": "https://github.com/oobayly/geodesy.git",
+  "_direct": true
+}

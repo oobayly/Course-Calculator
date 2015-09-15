@@ -1,0 +1,33 @@
+<div class="card list options">
+  <ion-item class="item-divider">Fleet options</ion-item>
+  
+  <ion-item class="item-input item-select item-select-left">
+    <ion-label class="input-label">Class</ion-label>
+    <select ng-model="configuration.fleet.class" ng-options="item as item.name for item in classes | orderBy:'name'"></select>
+  </ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">
+      LoA
+      <span ng-show="configuration.fleet.class.editable">(m)</span>
+    </ion-label>
+    <input ng-model="configuration.fleet.class.loa" ng-show="configuration.fleet.class.editable" type="number" min="0" step="1" placeholder="Length Overall (metres)">
+    <length ng-show="!configuration.fleet.class.editable" value="configuration.fleet.class.loa" decimals="1" show-inches="true" />
+  </ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">Starters</ion-label>
+    <input ng-model="configuration.fleet.starters" type="number" min="1" step="5" placeholder="Number of starters">
+  </ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">Spacing (%)</ion-label>
+    <input ng-model="configuration.fleet.spacing" type="number" min="0" step="5" placeholder="Extra space per boat">
+  </ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">Tack angle (&deg;)</ion-label>
+    <input ng-model="configuration.fleet.tackAngle" type="number" min="0" step="1" placeholder="Angle between tacks">
+  </ion-item>
+  
+  <ion-item class="item-divider item-input">
+    <ion-label class="input-label">Line length</ion-label>
+    <length value="getLineLength()" />
+  </ion-item>
+</div>
