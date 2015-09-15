@@ -1,3 +1,10 @@
+/* Remove Roboto font
+   https://code.google.com/p/gmaps-api-issues/issues/detail?id=5880
+*/
+body {
+  font-family: 'Helvetica Neue', 'Segoe UI', sans-serif !important;
+}
+
 .list.options .item-input .input-label:after {
   content: ":";
 }
