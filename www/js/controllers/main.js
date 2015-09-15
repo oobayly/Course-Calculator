@@ -2,7 +2,7 @@ angular.module("CourseCalculator.controllers")
 
 .controller("MainCtrl", function($filter, $http, $q, $scope, $timeout, $window,
                                  $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
-                                 Classes, Course, LocationModal, x2js) {
+                                 Classes, Course, geomag, LocationModal, x2js) {
   
   $scope.classes = Classes.getClasses();
   
@@ -83,75 +83,16 @@ angular.module("CourseCalculator.controllers")
   
   // Called when the magnetic declination button is clicked
   $scope.doGetMagneticDeclination = function() {
-    var now = new Date();
-    var data = {
-      browserRequest: true,
-      lat1: Math.abs($scope.configuration.course.startPosition.lat),
-      lat1Hemisphere: $scope.configuration.course.startPosition.lat < 1 ? "S" : "N",
-      lon1: Math.abs($scope.configuration.course.startPosition.lon),
-      lon1Hemisphere: $scope.configuration.course.startPosition.lon <1 ? "W" : "E",
-      model: "WMM",
-      startYear: now.getFullYear(),
-      startMonth: now.getMonth() + 1,
-      startDay: now.getDate(),
-      resultFormat: "xml"
-    };
-    
-    var params = [];
-    angular.forEach(data, function(item, key) {
-      params.push(encodeURIComponent(key) + "=" + encodeURIComponent(item));
+    geomag.getDeclination({
+      lat: $scope.configuration.course.startPosition.lat,
+      lon: $scope.configuration.course.startPosition.lon,
+    }).then(function(declination) {
+      // To 1dp
+      $scope.configuration.course.declination = Math.round(declination * 10) / 10;
+      
+    }).catch(function(error) {
+      console.log(error);
     });
-    
-    var q = $q.defer();
-    var promise = q.promise;
-    
-    $http({
-//      method: "GET",
-//      url: "./geomag.xml"
-      method: "POST",
-      url: "http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination",
-      data: params.join("&"),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-      }
-    }).then(function(resp) {
-      q.resolve(resp.data);
-      
-    }).catch(function(resp) {
-      q.reject("An error occurred getting the magnetic declination.");
-
-    });
-    
-    promise
-    .then(function(xml) {
-      var qParse = $q.defer();
-      
-      var data = x2js.xml_str2json(xml);
-      
-      if (data && data.maggridresult && data.maggridresult.result) {
-        var declination = parseFloat(data.maggridresult.result.declination.__text);
-        if (isNaN(declination)) {
-          qParse.reject("Invalid declination returned.");
-        } else {
-          qParse.resolve(Math.round(100 * declination) / 100); // Rounded to 2 dp
-        }
-
-      } else {
-        qParse.reject("The magnetic declination data was invalid.");
-      }
-      
-      return qParse.promise;
-    })
-    .then(function(declination) {
-      $scope.configuration.course.declination = declination;
-      
-    })
-    .catch(function(err) {
-      // TODO: implement errors
-      console.log(err);
-      
-    });
-      
   };
   
   // Gets the bearing from one point to another
