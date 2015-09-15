@@ -1,4 +1,4 @@
-angular.module("CourseCalculator.controllers", ["cb.x2js"]);
+angular.module("CourseCalculator.controllers", []);
 angular.module("CourseCalculator.services", []);
 
 angular.module("CourseCalculator", ["ionic",

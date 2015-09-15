@@ -2,7 +2,7 @@ angular.module("CourseCalculator.controllers")
 
 .controller("MainCtrl", function($filter, $http, $q, $scope, $timeout, $window,
                                  $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
-                                 Classes, Course, geomag, LocationModal, x2js) {
+                                 Classes, Course, geomag, LocationModal) {
   
   $scope.classes = Classes.getClasses();
   
