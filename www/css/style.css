@@ -21,6 +21,11 @@ body {
   background-color: transparent !important;
 }
 
+/* Break at newlines, breaks and where necessary */
+.item-pre {
+  white-space: pre-line;
+}
+
 /* Make select box in list left-aligned */
 .item-select.item-select-left select {
   right: auto !important;
