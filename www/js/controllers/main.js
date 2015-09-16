@@ -89,7 +89,6 @@ angular.module("CourseCalculator.controllers")
           break;
       }
 
-
       console.log("Error getting location: " + err.message + " (" + err.code + ")");
       $scope.showError({
         title: "GPS Error",
