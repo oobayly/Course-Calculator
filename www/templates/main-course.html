@@ -64,7 +64,9 @@
     <ion-label class="input-label">Declination (&deg;)</ion-label>
     <input ng-model="configuration.course.declination" type="number" min="-90" max="90" placeholder="Magnetic declination"/>
     <div class="buttons">
-      <button ng-show="true" class="button icon ion-compass" ng-click="doGetMagneticDeclination()"></button>
+      <button ng-show="true" class="button icon ion-compass"
+              ng-disabled="!(configuration.course.startPosition.lat || configuration.course.startPosition.lon)"
+              ng-click="doGetMagneticDeclination()"></button>
     </div>
   </ion-item>
   <ion-item class="item-input" ng-click="doEnterLatitude()">
