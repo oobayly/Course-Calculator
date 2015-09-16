@@ -178,7 +178,7 @@ angular.module("CourseCalculator.controllers")
       return true;
 
     // Threshold is 10s
-    return (new Date().getTime() - $scope.gps.position.localTimestamp) > 10000;
+    return (new Date().getTime() - $scope.gps.position.timestamp) > 10000;
   };
 
   // Gets the formatted latitude
@@ -313,7 +313,6 @@ angular.module("CourseCalculator.controllers")
     $scope.gps.position = {
       timestamp: position.timestamp,
       date: new Date(position.timestamp),
-      localTimestamp: new Date().getTime(),
       coords: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
