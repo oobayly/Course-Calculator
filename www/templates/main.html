@@ -11,7 +11,7 @@
     <!-- Fleet -->
     <ion-tab title="Fleet" icon="ion-android-boat" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content delegate-handle="fleet">
+        <ion-content has-bouncing="false" delegate-handle="fleet">
           <ng-include src="'templates/main-fleet.html'"></ng-include>
         </ion-content>
       </ion-view>
@@ -20,7 +20,7 @@
     <!-- Course -->
     <ion-tab title="Course" icon="ion-clipboard" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content delegate-handle="course">
+        <ion-content has-bouncing="false" delegate-handle="course">
           <ng-include src="'templates/main-course.html'"></ng-include>
         </ion-content>
       </ion-view>
@@ -29,7 +29,7 @@
     <!-- Chart -->
     <ion-tab title="Chart" icon="ion-map" on-select="onTabSelect($event)" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content delegate-handle="chart" scroll="false">
+        <ion-content has-bouncing="false" delegate-handle="chart" scroll="false">
           <ng-include src="'templates/main-chart.html'"></ng-include>
         </ion-content>
       </ion-view>
@@ -38,7 +38,7 @@
     <!-- Information -->
     <ion-tab title="Info" icon="ion-information" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content delegate-handle="info">
+        <ion-content has-bouncing="false" delegate-handle="info">
           <ng-include src="'templates/main-info.html'"></ng-include>
         </ion-content>
       </ion-view>
@@ -47,7 +47,7 @@
     <!-- GPS -->
     <ion-tab title="GPS" icon="ion-ios-navigate-outline" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content delegate-handle="gps">
+        <ion-content has-bouncing="false" delegate-handle="gps">
           <ng-include src="'templates/main-gps.html'"></ng-include>
         </ion-content>
       </ion-view>
@@ -55,7 +55,7 @@
     
     <ion-tab title="Debug" icon="ion-social-codepen-outline" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content delegate-handle="debug">
+        <ion-content has-bouncing="false" delegate-handle="debug">
           <pre>{{configuration | json}}</pre>
           <pre>{{course | json}}</pre>
         </ion-content>
