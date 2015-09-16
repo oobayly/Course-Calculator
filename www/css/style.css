@@ -5,6 +5,11 @@ body {
   font-family: 'Helvetica Neue', 'Segoe UI', sans-serif !important;
 }
 
+/* Add padding to a button bar */
+.button-bar-padded {
+  padding: 0 16px;
+}
+
 /* Add suffix for input labels in options lists */
 .list.options .item-input .input-label:after {
   content: ":";
