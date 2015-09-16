@@ -28,8 +28,7 @@ angular.module("CourseCalculator", ["ionic",
   // The Main state
   .state("main", {
     url: "/main",
-    templateUrl: "templates/main.html",
-    controller: "MainCtrl"
+    templateUrl: "templates/main.html"
   })
   ;
 
