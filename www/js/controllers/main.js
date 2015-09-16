@@ -34,14 +34,11 @@ angular.module("CourseCalculator.controllers")
     
     var geoOptions = {
       enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 30000
+      maximumAge: 0
     };
     
     navigator.geolocation.watchPosition($scope.onWatchPosition, function(err) {
-      // TODO: Implement notification that location is not available
       console.log("Error getting location: " + err.message + " (" + err.code + ")");
-      
     }, geoOptions);
     
     // For testing - select the tab being worked on
@@ -196,18 +193,7 @@ angular.module("CourseCalculator.controllers")
 
     return configuration;
   };
-  
-  // Called when the NOAA geomag web service returns a result
-  $scope.onGotMagGridResult = function(xml) {
-    var x = new X2JS();
-    var data = x.xml_str2json(xml);
-    
-    if (!data) {
-      // TODO: implement errors
-      return;
-    }
-  };
-  
+
   // Called when the geolocation service returns a position
   $scope.onGotPosition = function(position, accept) {
     // If the position has been explicitly accepted
