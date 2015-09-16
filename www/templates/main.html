@@ -1,7 +1,13 @@
-<ion-view>
+<ion-view ng-controller="MainCtrl">
   <ion-nav-title>Course Calculator</ion-nav-title>
   
-  <ion-tabs class="has-header tabs-icon-top tabs-stable" ng-controller="MainCtrl">
+  <ion-nav-buttons side="right">
+    <button class="button icon-left ion-android-locate" ng-class="{'icon-opaque': getIsGPSState()}" ng-click="doToggleGPS()">
+      {{gps.watch ? 'On' : 'Off'}}
+    </button>
+  </ion-nav-buttons>
+
+  <ion-tabs class="has-header tabs-icon-top tabs-stable">
     <!-- Fleet -->
     <ion-tab title="Fleet" icon="ion-android-boat" on-select="onTabSelect($event)">
       <ion-view>

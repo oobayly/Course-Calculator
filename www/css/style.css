@@ -38,3 +38,8 @@ body {
 .info .row:nth-of-type(1) > .col {
   white-space: nowrap;
 }
+
+/* Makes the icon opaque */
+.icon-opaque:before {
+  opacity: 0.5;
+}

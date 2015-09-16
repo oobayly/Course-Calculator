@@ -17,7 +17,14 @@ angular.module("CourseCalculator.controllers")
   
   $scope.mapUpdateRequired = true; // Flag that indicates whether the map should be updated
   
-  $scope.position = null;
+  $scope.gps = {
+    watch: null, //
+    position: null, // The current position
+    options: {
+      enableHighAccuracy: true,
+      maximumAge: 0
+    }
+  };
   
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
     
@@ -31,19 +38,14 @@ angular.module("CourseCalculator.controllers")
       $scope.course = Course.getCourse($scope.configuration);
       $scope.mapUpdateRequired = true;
     }, true);
-    
-    var geoOptions = {
-      enableHighAccuracy: true,
-      maximumAge: 0
-    };
-    
-    navigator.geolocation.watchPosition($scope.onWatchPosition, function(err) {
-      console.log("Error getting location: " + err.message + " (" + err.code + ")");
-    }, geoOptions);
+
+    // Start the GPS
+    if (JSON.parse($window.localStorage.getItem("gps-state")))
+      $scope.doToggleGPS();
     
     // For testing - select the tab being worked on
     $timeout(function() {
-//      $ionicTabsDelegate.select(1);
+//      $ionicTabsDelegate.select(4);
     });
   };
 
@@ -112,6 +114,21 @@ angular.module("CourseCalculator.controllers")
     });
   };
   
+  // Called when the toggle GPS buttons is clicked
+  $scope.doToggleGPS = function() {
+    if ($scope.gps.watch) {
+      navigator.geolocation.clearWatch($scope.gps.watch);
+      $scope.gps.watch = null;
+    } else {
+      $scope.gps.watch = navigator.geolocation.watchPosition($scope.onWatchPosition, function(err) {
+        console.log("Error getting location: " + err.message + " (" + err.code + ")");
+      }, $scope.gps.options);
+    }
+
+    // Save the state
+    $window.localStorage.setItem("gps-state", JSON.stringify($scope.gps.watch ? true : false));
+  };
+
   // Gets the bearing from one point to another
   $scope.getBearing = function(start, end, back) {
     var brg = start.rhumbBearingTo(end);
@@ -155,6 +172,15 @@ angular.module("CourseCalculator.controllers")
     return start.rhumbDistanceTo(end);
   };
   
+  // Gets a flag indicating whether the GPS data is stale
+  $scope.getIsGPSState = function() {
+    if (!$scope.gps.position)
+      return true;
+
+    // Threshold is 10s
+    return (new Date().getTime() - $scope.gps.position.localTimestamp) > 10000;
+  };
+
   // Gets the formatted latitude
   $scope.getLatitude = function(value) {
     return Dms.toLat(value, "dms", 2, true);
@@ -284,9 +310,10 @@ angular.module("CourseCalculator.controllers")
   // Called when the goelocation watch function returns a result
   $scope.onWatchPosition = function(position) {
     // Clone this object so it can be cached - needs to be done manually
-    $scope.position = {
+    $scope.gps.position = {
       timestamp: position.timestamp,
       date: new Date(position.timestamp),
+      localTimestamp: new Date().getTime(),
       coords: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -297,7 +324,10 @@ angular.module("CourseCalculator.controllers")
         speed: position.coords.speed
       }
     };
-    $scope.$apply("position");
+
+    // Update if on the gps tab
+    if ($ionicTabsDelegate.selectedIndex() == $scope.tabs.indexOf("gps"))
+      $scope.$apply("position");
   };
   
   // Saves the current configuration
