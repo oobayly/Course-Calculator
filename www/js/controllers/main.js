@@ -72,10 +72,28 @@ angular.module("CourseCalculator.controllers")
     };
     
     navigator.geolocation.getCurrentPosition($scope.onGotPosition, function(err) {
+      var message;
+      switch (err.code) {
+        case err.POSITION_DENIED:
+          message = "The app doesn't have permission to use the GPS.";
+          break;
+
+        case err.TIMEOUT:
+          message = "Your location couldn't be found within " +
+            $filter("number")(options.timeout / 1000, 0) + " seconds.<br>" +
+            "Do you have a clear view of the sky?";
+          break;
+
+        default:
+          message = "An error occurred getting the location.<br>Is your GPS enabled?";
+          break;
+      }
+
+
       console.log("Error getting location: " + err.message + " (" + err.code + ")");
       $scope.showError({
-        title: "GPS error",
-        message: "An error occurred getting the location.<br>Is your GPS switched on?"
+        title: "GPS Error",
+        message: message
       });
       
     }, options);
@@ -300,8 +318,6 @@ angular.module("CourseCalculator.controllers")
 
     var scope = $scope.$new(true);
     scope.message = params.message;
-
-    console.log(scope);
 
     return $ionicPopup.alert({
       scope: scope,
