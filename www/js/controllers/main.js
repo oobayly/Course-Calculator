@@ -71,12 +71,15 @@ angular.module("CourseCalculator.controllers")
     var options = {
       enableHighAccuracy: true,
       maximumAge: 0,
-      timeout: 30000
+      timeout: 10000
     };
     
     navigator.geolocation.getCurrentPosition($scope.onGotPosition, function(err) {
-      // TODO: Implement error handling
       console.log("Error getting location: " + err.message + " (" + err.code + ")");
+      $scope.showError({
+        title: "GPS error",
+        message: "An error occurred getting the location.<br>Is your GPS switched on?"
+      });
       
     }, options);
   };
@@ -305,6 +308,23 @@ angular.module("CourseCalculator.controllers")
     $window.localStorage.setItem("configuration", JSON.stringify($scope.configuration));
   };
   
+  // Shows an error dialog
+  $scope.showError = function(params) {
+    params.title = params.title || "An error occurred";
+
+    var scope = $scope.$new(true);
+    scope.message = params.message;
+
+    console.log(scope);
+
+    return $ionicPopup.alert({
+      scope: scope,
+      title: params.title,
+      templateUrl: "templates/popup-alert.html",
+      okText: "Close"
+    });
+  };
+
   $scope.init();
 })
 ;
