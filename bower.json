@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "geodesy": "https://github.com/oobayly/geodesy.git#~1.0.2",
-    "geomagJS": "https://github.com/oobayly/geomagJS.git#~0.9.2015"
+    "geomagJS": "https://github.com/oobayly/geomagJS.git#~0.9.2015",
+    "jszip": "Stuk/jszip#~2.5.0"
   }
 }
