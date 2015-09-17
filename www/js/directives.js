@@ -258,7 +258,10 @@ angular.module("CourseCalculator")
     restrict: "E",
     replace: true,
     
-    template: "<span>{{getMetric()}} ({{getImperial()}})</span>",
+    template: "<span>" +
+      "<span ng-show='!hasValue()'>n/a</span>" +
+      "<span ng-show='hasValue()'>{{getMetric()}} ({{getImperial()}})</span>" +
+      "<span>",
     
     link: function($scope) {
       $scope.getImperial = function() {
@@ -282,6 +285,10 @@ angular.module("CourseCalculator")
       
       $scope.getMetric = function() {
         return $filter("number")($scope.value, $scope.dp || 0) + " m";
+      };
+
+      $scope.hasValue = function() {
+        return ($scope.value !== null) && (typeof $scope.value !== "undefined");
       };
     },
     

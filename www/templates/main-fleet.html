@@ -7,11 +7,25 @@
   </ion-item>
   <ion-item class="item-input">
     <ion-label class="input-label">
-      LoA
-      <span ng-show="configuration.fleet.class.editable">(m)</span>
+      LOA
+      <span ng-show="configuration.fleet.class.canEdit">(m)</span>
     </ion-label>
-    <input ng-model="configuration.fleet.class.loa" ng-show="configuration.fleet.class.editable" type="number" min="0" step="1" placeholder="Length Overall (metres)">
-    <length ng-show="!configuration.fleet.class.editable" value="configuration.fleet.class.loa" decimals="1" show-inches="true" />
+    <input ng-model="configuration.fleet.class.loa"
+           ng-show="configuration.fleet.class.canEdit"
+           type="number" min="0" step="1" placeholder="Length Overall (metres)">
+    <length ng-show="!configuration.fleet.class.canEdit"
+            value="configuration.fleet.class.loa" decimals="2" show-inches="true" />
+  </ion-item>
+  <ion-item class="item-input">
+    <ion-label class="input-label">
+      LWL
+      <span ng-show="configuration.fleet.class.canEdit">(m)</span>
+    </ion-label>
+    <input ng-model="configuration.fleet.class.lwl"
+           ng-show="configuration.fleet.class.canEdit"
+           type="number" min="0" step="1" placeholder="Waterline length (metres)">
+    <length ng-show="!configuration.fleet.class.canEdit"
+            value="configuration.fleet.class.lwl" decimals="2" show-inches="true" />
   </ion-item>
   <ion-item class="item-input">
     <ion-label class="input-label">Starters</ion-label>

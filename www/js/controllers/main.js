@@ -210,6 +210,13 @@ angular.module("CourseCalculator.controllers")
   
   // Loads the specified configuration
   $scope.loadConfiguration = function(configuration) {
+    var oldVersion = localStorage.getItem("version") || "";
+    if ($scope.VERSION !== oldVersion) {
+      console.log("Version has changed from " + oldVersion + " to " + $scope.VERSION + " - removing configuration");
+      $window.localStorage.removeItem("configuration");
+      $window.localStorage.setItem("version", $scope.VERSION);
+    }
+
     // Attempt to load a cached version is none is provided
     if (!configuration) {
       configuration = $window.localStorage.getItem("configuration");
@@ -224,11 +231,29 @@ angular.module("CourseCalculator.controllers")
     if (!configuration)
       configuration = $scope.getDefaultConfiguration();
     
-    // Update the class and course references to equal the loaded objects
+    // Update course references to equal the loaded objects
     angular.forEach($scope.courses, function(item, key) {
       if (item.description === configuration.course.type.description)
         $scope.courses[key] = configuration.course.type;
     });
+
+    // If the class is editable, then update the custom definition, otherwise use the declared def
+    if (configuration.fleet.class.canEdit) {
+      var custom = $scope.classes[0];
+      custom.loa = configuration.fleet.class.loa;
+      custom.lwl = configuration.fleet.class.lwl || null;
+      configuration.fleet.class = custom;
+
+    } else {
+      for (var i = 0; i < $scope.classes.length; i++) {
+        if ($scope.classes[i].name === configuration.fleet.class.name) {
+          configuration.fleet.class = $scope.classes[i];
+        }
+      }
+    }
+
+
+
     for (var i = 0; i < $scope.classes.length; i++) {
       if ($scope.classes[i].name === configuration.fleet.class.name)
         $scope.classes[i] = configuration.fleet.class;

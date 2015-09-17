@@ -5,7 +5,7 @@ angular.module("CourseCalculator", ["ionic",
                                      "CourseCalculator.controllers", "CourseCalculator.services"
                                     ])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,8 @@ angular.module("CourseCalculator", ["ionic",
       StatusBar.styleLightContent();
     }
   });
+
+  $rootScope.VERSION = "1.0.1";
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
