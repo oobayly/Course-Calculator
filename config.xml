@@ -18,7 +18,7 @@
 
   <access origin="*"/>
   
-  <preferenec name="phonegap-version" value="3.5.0"/>
+  <preference name="phonegap-version" value="3.5.0"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
