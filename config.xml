@@ -15,6 +15,9 @@
   
   <gap:plugin name="org.apache.cordova.device" />
   <gap:plugin name="org.apache.cordova.geolocation" />
+  <gap:plugin name="cordova-plugin-customurlscheme" source="npm">
+    <param name="URL_SCHEME" value="coursemanager" />
+  </gap:plugin>
 
   <access origin="*"/>
   
