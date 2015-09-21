@@ -5,7 +5,7 @@ angular.module("CourseCalculator", ["ionic",
                                      "CourseCalculator.controllers", "CourseCalculator.services"
                                     ])
 
-.run(function($ionicPlatform, $rootScope) {
+.run(function($ionicPlatform, $rootScope, $window) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,9 +18,10 @@ angular.module("CourseCalculator", ["ionic",
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+
   });
 
-  $rootScope.VERSION = "1.0.1";
+  $rootScope.VERSION = "0.0.1";
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -38,3 +39,7 @@ angular.module("CourseCalculator", ["ionic",
   $urlRouterProvider.otherwise('/main');
 
 });
+
+window.handleOpenURL = function(url) {
+  console.log(url);
+};
