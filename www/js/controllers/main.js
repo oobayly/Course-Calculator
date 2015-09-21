@@ -54,7 +54,21 @@ angular.module("CourseCalculator.controllers")
     LocationModal.show({
       showLat: true,
       lat: $scope.configuration.course.startPosition.lat
-    }, $scope.onLocationModalCallback);
+    }).then(function(result) {
+      // The modal screws up the google maps element, so force the map to be updated
+      // when the tab is next selected
+      $scope.mapUpdateRequired = true;
+
+      // May have an empty result
+      if (!result)
+        return;
+
+      if (typeof result.lat !== "undefined")
+        $scope.configuration.course.startPosition.lat = result.lat;
+
+      if (typeof result.lon !== "undefined")
+        $scope.configuration.course.startPosition.lon = result.lon;
+    });
   };
 
   // Called when the enter longitude button is clicked
@@ -113,7 +127,7 @@ angular.module("CourseCalculator.controllers")
       console.log(error);
     });
   };
-  
+
   // Called when the toggle GPS buttons is clicked
   $scope.doToggleGPS = function() {
     if ($scope.gps.watch) {
@@ -290,23 +304,6 @@ angular.module("CourseCalculator.controllers")
       if (result)
         $scope.onGotPosition(position, true);
     });
-  };
-  
-  // Called when the location modal is closed
-  $scope.onLocationModalCallback = function(result) {
-    // The modal screws up the google maps element, so force the map to be updated
-    // when the tab is next selected
-    $scope.mapUpdateRequired = true;
-
-    // May have an empty result
-    if (!result)
-      return;
-    
-    if (typeof result.lat !== "undefined")
-      $scope.configuration.course.startPosition.lat = result.lat;
-
-    if (typeof result.lon !== "undefined")
-      $scope.configuration.course.startPosition.lon = result.lon;
   };
 
   // Called when a mark on the chart is clicked

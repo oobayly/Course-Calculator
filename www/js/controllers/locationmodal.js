@@ -51,8 +51,7 @@ angular.module("CourseCalculator.controllers")
 
 // Shows the location modal
 // params: {showLat: false, showLon: false, lat: 0, lon: 0}
-// callback: function({lat: null, lon: null})
-.service("LocationModal", function($rootScope, $window,
+.service("LocationModal", function($q, $rootScope, $window,
                                    $ionicModal
                                    ) {
   
@@ -202,7 +201,9 @@ angular.module("CourseCalculator.controllers")
   };
   
   // Shows the location modal
-  this.show = function(params, callback) {
+  this.show = function(params) {
+    var q = $q.defer();
+
     var $scope = $rootScope.$new();
     
     // Use the location information provided
@@ -241,8 +242,10 @@ angular.module("CourseCalculator.controllers")
       $scope.modal.remove();
       $scope.modal = null;
 
-      callback(result);
+      q.resolve(result);
     };
+
+    return q.promise;
   };
   
 });
