@@ -42,7 +42,8 @@ angular.module("CourseCalculator.services")
       line: (config.fleet.class.loa * config.fleet.starters * config.fleet.spacing / 100) || 100,
       tackAngle: config.fleet.tackAngle || 0,
       marks: {
-        list: []
+        list: [],
+        allMarks: []
       },
       legs: []
     };
@@ -113,11 +114,12 @@ angular.module("CourseCalculator.services")
     }
     
     // Create a temporay array of all the marks *and* the pin
-    var tempList = resp.marks.list.slice(0);
+    resp.marks.allMarks = resp.marks.list.slice(0);
     if (resp.eta)
-      tempList.push(resp.marks.pin);
+      resp.marks.allMarks.push(resp.marks.pin);
+    resp.marks.allMarks.push(resp.marks.cb);
     
-    angular.forEach(tempList, function(mark, index) {
+    angular.forEach(resp.marks.allMarks, function(mark, index) {
       // Skip the committee boat
       if (mark === resp.marks.cb)
         return;
