@@ -24,7 +24,8 @@ angular.module("CourseCalculator.controllers")
       enableHighAccuracy: true,
       maximumAge: 0
     },
-    destination: null
+    destination: null,
+    dials: null
   };
   
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
@@ -345,7 +346,7 @@ angular.module("CourseCalculator.controllers")
   // Called when the goelocation watch function returns a result
   $scope.onWatchPosition = function(position) {
     // Clone this object so it can be cached - needs to be done manually
-    $scope.gps.position = {
+    var temp = {
       timestamp: position.timestamp,
       date: new Date(position.timestamp),
       coords: {
@@ -359,34 +360,37 @@ angular.module("CourseCalculator.controllers")
       }
     };
 
+    var dials = {
+      distance: null,
+      bearing: null,
+      vmg: null,
+      turn: null,
+      ttw: null
+    };
+
     if ($scope.gps.destination) {
       var from = new LatLon(position.coords.latitude, position.coords.longitude);
-      var distance = from.rhumbDistanceTo($scope.gps.destination.wgs);
-      var bearing = from.rhumbBearingTo($scope.gps.destination.wgs);
+      dials.distance = from.rhumbDistanceTo($scope.gps.destination.wgs);
+      dials.bearing = from.rhumbBearingTo($scope.gps.destination.wgs);
 
       // Calculate VMG
-      var vmg = null;
-      var turn = null;
-      var ttw = null;
-      if ($scope.gps.position.coords.speed && $scope.gps.position.coords.heading) {
+      if (position.coords.speed && position.coords.heading) {
         // Calculate turn - Right: positive, Left: negative
-        turn = (360 + bearing - $scope.gps.position.coords.heading) % 360;
-        if (turn >= 180)
-          turn = turn - 360;
+        dials.turn = (360 + dials.bearing - position.coords.heading) % 360;
+        if (dials.turn >= 180)
+          dials.turn = dials.turn - 360;
 
         // Calculate VMG, and Time-to-Waypoint if VMG is positive
-        vmg = $scope.gps.position.coords.speed * Math.cos(turn.toRadians());
-        if (vmg > 0)
-          ttw = distance / vmg;
+        dials.vmg = position.coords.speed * Math.cos(dials.turn.toRadians());
+        if (dials.vmg > 0)
+          dials.ttw = dials.distance / dials.vmg;
       }
-      $scope.gps.dials = {
-        distance: distance,
-        bearing: bearing,
-        vmg: vmg,
-        turn: turn,
-        ttw: ttw
-      };
     }
+
+    $scope.gps.position = temp;
+    $scope.gps.dials = dials;
+    if ($ionicTabsDelegate.selectedIndex() == $scope.tabs.indexOf("gps"))
+      $scope.$apply("gps");
   };
   
   // Saves the current configuration
