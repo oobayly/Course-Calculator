@@ -2,7 +2,7 @@ angular.module("CourseCalculator.controllers")
 
 .controller("MainCtrl", function($filter, $http, $q, $scope, $timeout, $window,
                                  $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
-                                 Classes, Course, geomag, LocationModal) {
+                                 Classes, Course, geomag, HelpModal, LocationModal) {
   
   $scope.classes = Classes.getClasses();
   
@@ -126,6 +126,11 @@ angular.module("CourseCalculator.controllers")
     }).catch(function(error) {
       console.log(error);
     });
+  };
+
+  // Called when a help topic should be displayed
+  $scope.doShowHelp = function(topic) {
+    HelpModal.show(topic);
   };
 
   // Called when the toggle GPS buttons is clicked
