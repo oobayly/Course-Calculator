@@ -23,7 +23,8 @@ angular.module("CourseCalculator.controllers")
     options: {
       enableHighAccuracy: true,
       maximumAge: 0
-    }
+    },
+    destination: null
   };
   
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
@@ -42,10 +43,10 @@ angular.module("CourseCalculator.controllers")
     // Start the GPS
     if (JSON.parse($window.localStorage.getItem("gps-state")))
       $scope.doToggleGPS();
-    
+
     // For testing - select the tab being worked on
     $timeout(function() {
-//      $ionicTabsDelegate.select(4);
+      //$ionicTabsDelegate.select(4);
     });
   };
 
@@ -329,9 +330,16 @@ angular.module("CourseCalculator.controllers")
         ionic.trigger("resize");
         $scope.mapUpdateRequired = false;
       }
-    } else {
-      $ionicScrollDelegate.scrollTop(false);
+      return;
+
+    } else if (tab === "gps") {
+      // Default to the committee vessel
+      if (!$scope.gps.destination)
+        $scope.gps.destination = $scope.course.marks.cb;
+
     }
+
+    $ionicScrollDelegate.scrollTop(false);
   };
   
   // Called when the goelocation watch function returns a result
@@ -351,9 +359,34 @@ angular.module("CourseCalculator.controllers")
       }
     };
 
-    // Update if on the gps tab
-    if ($ionicTabsDelegate.selectedIndex() == $scope.tabs.indexOf("gps"))
-      $scope.$apply("position");
+    if ($scope.gps.destination) {
+      var from = new LatLon(position.coords.latitude, position.coords.longitude);
+      var distance = from.rhumbDistanceTo($scope.gps.destination.wgs);
+      var bearing = from.rhumbBearingTo($scope.gps.destination.wgs);
+
+      // Calculate VMG
+      var vmg = null;
+      var turn = null;
+      var ttw = null;
+      if ($scope.gps.position.coords.speed && $scope.gps.position.coords.heading) {
+        // Calculate turn - Right: positive, Left: negative
+        turn = (360 + bearing - $scope.gps.position.coords.heading) % 360;
+        if (turn >= 180)
+          turn = turn - 360;
+
+        // Calculate VMG, and Time-to-Waypoint if VMG is positive
+        vmg = $scope.gps.position.coords.speed * Math.cos(turn.toRadians());
+        if (vmg > 0)
+          ttw = distance / vmg;
+      }
+      $scope.gps.dials = {
+        distance: distance,
+        bearing: bearing,
+        vmg: vmg,
+        turn: turn,
+        ttw: ttw
+      };
+    }
   };
   
   // Saves the current configuration

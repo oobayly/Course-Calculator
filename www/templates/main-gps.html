@@ -1,3 +1,18 @@
-<pre>
-  {{gps | json}}
-</pre>
+<div class="card list options">
+  <ion-item class="item-input item-select item-select-left">
+    <ion-label class="input-label">To</ion-label>
+    <select ng-model="gps.destination"
+            ng-options="item as item.name for item in course.marks.allMarks | orderBy:'name'">
+    </select>
+  </ion-item>
+</div>
+
+<div class="row">
+  <div class="col">
+  </div>
+  <div class="col">
+  </div>
+</div>
+
+<pre>{{gps.dials | json}}</pre>
+<pre>{{gps | json}}</pre>
