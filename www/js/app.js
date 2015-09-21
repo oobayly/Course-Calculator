@@ -40,6 +40,6 @@ angular.module("CourseCalculator", ["ionic",
 
 });
 
-window.handleOpenURL = function(url) {
+function handleOpenURL(url) {
   console.log(url);
 };
