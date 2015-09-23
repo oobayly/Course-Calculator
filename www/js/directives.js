@@ -236,7 +236,7 @@ angular.module("CourseCalculator")
       $scope.getBearing = function() {
         var delta;
         if ($scope.heading === null) {
-          delta = ($scope.bearing || 0) + ($scope.declination || 0);
+          delta = ($scope.bearing || 0) - ($scope.declination || 0);
         } else {
           delta = -($scope.heading || 0) + ($scope.bearing || 0);
         }
@@ -246,7 +246,7 @@ angular.module("CourseCalculator")
       $scope.getHeading = function() {
         var heading = 0;
         if ($scope.heading !== null) {
-          var heading = -($scope.heading + ($scope.declination || 0));
+          var heading = -($scope.heading - ($scope.declination || 0));
         }
 
         return $scope.getAngle(heading);
