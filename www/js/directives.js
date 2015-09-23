@@ -219,6 +219,29 @@ angular.module("CourseCalculator")
   };
 })
 
+.directive("compassRose", function() {
+  return {
+    restrict: "E",
+    replace: false,
+
+    template: "<img src='img/compass.svg' style='transform: translate(-50%, 0) rotate({{getAngle(-heading)}});'/>" +
+      "<img src='img/compass-arrow.svg' style='transform: translate(-50%, 0) rotate({{getAngle(-heading + bearing)}});'/>",
+
+    link: function($scope) {
+      $scope.getAngle = function(angle) {
+        angle = (angle || 0) - ($scope.declination || 0);
+        return ((angle + 360) % 360) + "deg";
+      }
+    },
+
+    scope: {
+      declination: "=declination",
+      heading: "=heading",
+      bearing: "=bearing"
+    }
+  };
+})
+
 .directive("latLon", function() {
   return {
     restrict: "E",

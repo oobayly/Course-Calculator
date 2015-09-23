@@ -43,3 +43,18 @@ body {
 .icon-opaque:before {
   opacity: 0.5;
 }
+
+/* The compass rose */
+compass-rose {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
+compass-rose img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+}
