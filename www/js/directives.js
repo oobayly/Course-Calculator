@@ -224,14 +224,33 @@ angular.module("CourseCalculator")
     restrict: "E",
     replace: false,
 
-    template: "<img src='img/compass.svg' style='transform: translate(-50%, 0) rotate({{getAngle(-heading)}});'/>" +
-      "<img src='img/compass-arrow.svg' style='transform: translate(-50%, 0) rotate({{getAngle(-heading + bearing)}});'/>",
+    template: "<img src='img/compass.svg' style='transform: translate(-50%, 0) rotate({{getHeading()}});'/>" +
+      "<img src='img/compass-arrow.svg' style='transform: translate(-50%, 0) rotate({{getBearing()}});'/>",
 
     link: function($scope) {
       $scope.getAngle = function(angle) {
-        angle = (angle || 0) - ($scope.declination || 0);
+        angle = (angle || 0);
         return ((angle + 360) % 360) + "deg";
-      }
+      };
+
+      $scope.getBearing = function() {
+        var delta;
+        if ($scope.heading === null) {
+          delta = ($scope.bearing || 0) + ($scope.declination || 0);
+        } else {
+          delta = -($scope.heading || 0) + ($scope.bearing || 0);
+        }
+        return $scope.getAngle(delta);
+      };
+
+      $scope.getHeading = function() {
+        var heading = 0;
+        if ($scope.heading !== null) {
+          var heading = -($scope.heading + ($scope.declination || 0));
+        }
+
+        return $scope.getAngle(heading);
+      };
     },
 
     scope: {

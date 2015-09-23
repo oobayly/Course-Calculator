@@ -371,19 +371,19 @@ angular.module("CourseCalculator.controllers")
     };
 
     if ($scope.gps.destination) {
-      var from = new LatLon(position.coords.latitude, position.coords.longitude);
+      var from = new LatLon(temp.coords.latitude, temp.coords.longitude);
       dials.distance = from.rhumbDistanceTo($scope.gps.destination.wgs);
       dials.bearing = from.rhumbBearingTo($scope.gps.destination.wgs);
 
       // Calculate VMG
-      if (position.coords.speed && position.coords.heading) {
+      if (temp.coords.speed && temp.coords.heading) {
         // Calculate turn - Right: positive, Left: negative
-        dials.turn = (360 + dials.bearing - position.coords.heading) % 360;
+        dials.turn = (360 + dials.bearing - temp.coords.heading) % 360;
         if (dials.turn >= 180)
           dials.turn = dials.turn - 360;
 
         // Calculate VMG, and Time-to-Waypoint if VMG is positive
-        dials.vmg = position.coords.speed * Math.cos(dials.turn.toRadians());
+        dials.vmg = temp.coords.speed * Math.cos(dials.turn.toRadians());
         if (dials.vmg > 0)
           dials.ttw = dials.distance / dials.vmg;
       }
