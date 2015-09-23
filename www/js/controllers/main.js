@@ -1,7 +1,7 @@
 angular.module("CourseCalculator.controllers")
 
-.controller("MainCtrl", function($filter, $http, $q, $scope, $timeout, $window,
-                                 $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
+.controller("MainCtrl", function($filter, $http, $q, $rootScope, $scope, $timeout, $window,
+                                 $ionicModal, $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
                                  Classes, Course, geomag, HelpModal, LocationModal) {
   
   $scope.classes = Classes.getClasses();
@@ -29,6 +29,12 @@ angular.module("CourseCalculator.controllers")
   };
   
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
+  
+  $rootScope.$on("modal.shown", function(event) {
+    // The modal screws up the google maps element, so force the map to be updated
+    // when the tab is next selected
+    $scope.mapUpdateRequired = true;
+  });
     
   // Initialise the controller
   $scope.init = function() {
@@ -57,10 +63,6 @@ angular.module("CourseCalculator.controllers")
       showLat: true,
       lat: $scope.configuration.course.startPosition.lat
     }).then(function(result) {
-      // The modal screws up the google maps element, so force the map to be updated
-      // when the tab is next selected
-      $scope.mapUpdateRequired = true;
-
       // May have an empty result
       if (!result)
         return;

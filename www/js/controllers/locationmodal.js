@@ -205,6 +205,11 @@ angular.module("CourseCalculator.controllers")
     var q = $q.defer();
 
     var $scope = $rootScope.$new();
+
+    // Re-broadcast the modal events
+    $scope.$on("modal.shown", function(event) {
+      $rootScope.$emit("modal.shown", event);
+    });
     
     // Use the location information provided
     $scope.params = params;
