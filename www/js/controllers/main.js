@@ -59,15 +59,12 @@ angular.module("CourseCalculator.controllers")
     if (JSON.parse($window.localStorage.getItem("gps-state")))
       $scope.doToggleGPS();
 
-    for (var key in navigator) {
-      console.log("[" + (typeof navigator[key]) + "] " + key);
-    }
-
     // Start the compass
     if (navigator.compass) {
       $scope.compass.watch = navigator.compass.watchHeading(function(result) {
         try {
           $scope.compass.heading = result ? angular.copy(result) : null;
+          $sope.$apply("compass");
         } catch (e) {
           console.error(e);
         }
