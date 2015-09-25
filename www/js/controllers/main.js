@@ -59,6 +59,10 @@ angular.module("CourseCalculator.controllers")
     if (JSON.parse($window.localStorage.getItem("gps-state")))
       $scope.doToggleGPS();
 
+    for (var key in navigator) {
+      console.log("[" + (typeof navigator[key]) + "] " + key);
+    }
+
     // Start the compass
     if (navigator.compass) {
       $scope.compass.watch = navigator.compass.watchHeading(function(result) {
@@ -74,7 +78,7 @@ angular.module("CourseCalculator.controllers")
       }, $scope.compass.options);
 
     } else {
-      console.log("navigator.compass not available");
+      console.error("navigator.compass not available");
 
     }
 
