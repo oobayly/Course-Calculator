@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="net.tipstrade.racecoursemanager"
-        version="0.0.6"
+        version="0.0.7"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         xmlns:gap="http://phonegap.com/ns/1.0">
@@ -16,9 +16,9 @@
   <gap:plugin name="cordova-plugin-customurlscheme" source="npm">
     <param name="URL_SCHEME" value="coursemanager" />
   </gap:plugin>
-  <gap:plugin name="org.apache.cordova.device" source="npm" />
-  <gap:plugin name="org.apache.cordova.device-orientation" source="npm" />
-  <gap:plugin name="org.apache.cordova.geolocation" source="npm" />
+  <gap:plugin name="cordova-plugin-device" source="npm" />
+  <gap:plugin name="cordova-plugin-device-orientation" source="npm" />
+  <gap:plugin name="cordova-plugin-geolocation" source="npm" />
 
   <access origin="*"/>
   
