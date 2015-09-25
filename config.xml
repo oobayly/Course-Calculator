@@ -17,6 +17,9 @@
   <gap:plugin name="cordova-plugin-device-orientation" source="npm"/>
   <gap:plugin name="cordova-plugin-geolocation" source="npm"/>
   <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
+  <plugin name="cordova-plugin-device-orientation"/>
+  <plugin name="cordova-plugin-geolocation"/>
+  <plugin name="cordova-plugin-whitelist"/>
   <!-- Whitelisting -->
   <access origin="*"/>
   <!-- Preferences -->
