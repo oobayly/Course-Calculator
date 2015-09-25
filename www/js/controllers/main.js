@@ -60,8 +60,8 @@ angular.module("CourseCalculator.controllers")
       $scope.doToggleGPS();
 
     // Start the compass
-    if (typeof compass !== "undefined")
-      $scope.compass.watch = compass.watchHeading(function(result) {
+    if (typeof navigator.compass !== "undefined")
+      $scope.compass.watch = navigator.compass.watchHeading(function(result) {
         $scope.compass.heading = result ? angular.copy(result) : null;
 
       }, function(error) {
