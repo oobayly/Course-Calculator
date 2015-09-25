@@ -19,6 +19,15 @@ angular.module("CourseCalculator", ["ionic",
       StatusBar.styleLightContent();
     }
 
+    // Broadcast the pause event
+    $window.addEventListener("pause", function() {
+      $rootScope.$broadcast("cordova.pause");
+    }, false);
+    $window.addEventListener("resume", function() {
+      $rootScope.$broadcast("cordova.resume");
+    }, false);
+
+
   });
 
   $rootScope.VERSION = "0.0.1";
