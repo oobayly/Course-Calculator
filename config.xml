@@ -12,16 +12,16 @@
   </author>
 
   <content src="index.html"/>
-  
-  <gap:plugin name="org.apache.cordova.device" />
-  <gap:plugin name="org.apache.cordova.geolocation" />
+
   <gap:plugin name="cordova-plugin-customurlscheme" source="npm">
     <param name="URL_SCHEME" value="coursemanager" />
   </gap:plugin>
+  <gap:plugin name="org.apache.cordova.device" source="npm" />
+  <gap:plugin name="org.apache.cordova.geolocation" source="npm" />
 
   <access origin="*"/>
   
-  <preference name="phonegap-version" value="3.5.0"/>
+  <preference name="phonegap-version"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
