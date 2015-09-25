@@ -6,6 +6,14 @@ angular.module("CourseCalculator.controllers")
   
   $scope.classes = Classes.getClasses();
   
+  //
+  $scope.compass = {
+    watch: null,
+    options: {
+    },
+    heading: null
+  };
+
   $scope.configuration = {
     fleet: {},
     course: {}
@@ -50,6 +58,15 @@ angular.module("CourseCalculator.controllers")
     // Start the GPS
     if (JSON.parse($window.localStorage.getItem("gps-state")))
       $scope.doToggleGPS();
+
+    // Start the compass
+    if (typeof compass !== "undefined")
+      $scope.compass.watch = compass.watchHeading(function(result) {
+        $scope.compass.heading = result ? angular.copy(result) : null;
+
+      }, function(error) {
+        console.log("Compass is not available.");
+      }, $scope.compass.options);
 
     // For testing - select the tab being worked on
     $timeout(function() {
