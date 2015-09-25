@@ -60,13 +60,23 @@ angular.module("CourseCalculator.controllers")
       $scope.doToggleGPS();
 
     // Start the compass
-    if (typeof navigator.compass !== "undefined")
+    if (navigator.compass) {
       $scope.compass.watch = navigator.compass.watchHeading(function(result) {
-        $scope.compass.heading = result ? angular.copy(result) : null;
+        try {
+          $scope.compass.heading = result ? angular.copy(result) : null;
+        } catch (e) {
+          console.error(e);
+        }
 
       }, function(error) {
-        console.log("Compass is not available.");
+          console.error(JSON.stringify(error));
+
       }, $scope.compass.options);
+
+    } else {
+      console.log("navigator.compass not available");
+
+    }
 
     // For testing - select the tab being worked on
     $timeout(function() {
