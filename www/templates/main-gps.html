@@ -16,10 +16,10 @@
       <div class="flex-fill">
         <ion-slide-box show-pager="true">
           <ion-slide>
-            <mfd title="Distance to next" value="gps.dials.distance" type="distance"></mfd>
+            <mfd title="Distance to {{gps.destination.name}}" value="gps.dials.distance" type="distance"></mfd>
           </ion-slide>
           <ion-slide>
-            <mfd title="Time to next" value="gps.dials.ttw" type="time"></mfd>
+            <mfd title="Time to {{gps.destination.name}}" value="gps.dials.ttw" type="time"></mfd>
           </ion-slide>
           <ion-slide>
             <mfd title="Speed over ground" value="gps.position.coords.speed" type="speed"></mfd>
