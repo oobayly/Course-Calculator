@@ -10,6 +10,7 @@ angular.module("CourseCalculator.controllers")
   $scope.compass = {
     watch: null,
     options: {
+      frequency: 250 // Limit refresh rate to 4hz
     },
     heading: null
   };
@@ -38,6 +39,7 @@ angular.module("CourseCalculator.controllers")
   
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
   
+  // Raised when a modal is shown
   $rootScope.$on("modal.shown", function(event) {
     // The modal screws up the google maps element, so force the map to be updated
     // when the tab is next selected
@@ -61,22 +63,30 @@ angular.module("CourseCalculator.controllers")
 
     // Start the compass
     if (navigator.compass) {
+      // Only iOS supports the filter option
+      if (ionic.Platform.isIOS())
+        $scope.compass.options.filter = 1;
+
       $scope.compass.watch = navigator.compass.watchHeading(function(result) {
-        try {
-          $scope.compass.heading = result ? angular.copy(result) : null;
-          $sope.$apply("compass");
-        } catch (e) {
-          console.error(e);
-        }
-
+        // Cache and adjust for declination
+        $scope.compass.heading = result;
+        $scope.compass.heading.trueHeading = $scope.compass.heading.magneticHeading + ($scope.configuration.course.declination || 0);
+        $scope.$apply("compass");
       }, function(error) {
-          console.error(JSON.stringify(error));
-
+        var msg;
+        switch (error.code) {
+          case error.COMPASS_INTERNAL_ERR:
+            msg = "An internal compass error occurred";
+            break;
+          case error.COMPASS_NOT_SUPPORTED:
+            msg = "Compass is not supported";
+            break;
+          default:
+            msg = "An unexpected error occurred watching the compass";
+            break;
+        }
+        console.log(msg);
       }, $scope.compass.options);
-
-    } else {
-      console.error("navigator.compass not available");
-
     }
 
     // For testing - select the tab being worked on
@@ -170,6 +180,8 @@ angular.module("CourseCalculator.controllers")
     if ($scope.gps.watch) {
       navigator.geolocation.clearWatch($scope.gps.watch);
       $scope.gps.watch = null;
+      $scope.onPositionChanged(null);
+
     } else {
       $scope.gps.watch = navigator.geolocation.watchPosition($scope.onWatchPosition, function(err) {
         console.log("Error getting location: " + err.message + " (" + err.code + ")");
@@ -223,6 +235,19 @@ angular.module("CourseCalculator.controllers")
     return start.rhumbDistanceTo(end);
   };
   
+  $scope.getHeading = function() {
+    var heading = null;
+
+    // Only use gps heading of speed gr
+    if ($scope.gps.position)
+      heading = $scope.gps.position.coords.heading;
+
+    if ((heading == null) && $scope.compass.heading && ($scope.compass.heading.trueHeading))
+      heading = $scope.compass.heading.trueHeading;
+
+    return heading;
+  };
+
   // Gets a flag indicating whether the GPS data is stale
   $scope.getIsGPSState = function() {
     if (!$scope.gps.position)
@@ -313,6 +338,11 @@ angular.module("CourseCalculator.controllers")
     return configuration;
   };
 
+  // Called when the destination waypoint is changed
+  $scope.onDestinationChanged = function(event) {
+    $scope.onPositionChanged($scope.gps.position);
+  };
+
   // Called when the geolocation service returns a position
   $scope.onGotPosition = function(position, accept) {
     // If the position has been explicitly accepted
@@ -343,6 +373,57 @@ angular.module("CourseCalculator.controllers")
     });
   };
 
+  // Called when the GPS position is changed
+  $scope.onPositionChanged = function(position) {
+    var temp = null;
+    var dials = {
+      distance: null,
+      bearing: null,
+      vmg: null,
+      turn: null,
+      ttw: null
+    };
+
+    if (position) {
+      // Clone this object so it can be cached - needs to be done manually
+      var temp = {
+        timestamp: position.timestamp,
+        date: new Date(position.timestamp),
+        coords: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          altitude: position.coords.altitude,
+          accuracy: position.coords.accuracy,
+          altitudeAccuracy: position.coords.altitudeAccuracy,
+          heading: position.coords.heading,
+          speed: position.coords.speed
+        }
+      };
+
+      if ($scope.gps.destination) {
+        var from = new LatLon(temp.coords.latitude, temp.coords.longitude);
+        dials.distance = from.rhumbDistanceTo($scope.gps.destination.wgs);
+        dials.bearing = from.rhumbBearingTo($scope.gps.destination.wgs);
+
+        // Calculate VMG
+        if (temp.coords.speed && temp.coords.heading) {
+          // Calculate turn - Right: positive, Left: negative
+          dials.turn = (360 + dials.bearing - temp.coords.heading) % 360;
+          if (dials.turn >= 180)
+            dials.turn = dials.turn - 360;
+
+          // Calculate VMG, and Time-to-Waypoint if VMG is positive
+          dials.vmg = temp.coords.speed * Math.cos(dials.turn.toRadians());
+          if (dials.vmg > 0)
+            dials.ttw = dials.distance / dials.vmg;
+        }
+      }
+    }
+
+    $scope.gps.position = temp;
+    $scope.gps.dials = dials;
+  };
+
   // Called when a mark on the chart is clicked
   $scope.onMarkClick = function(mark) {
   };
@@ -365,8 +446,10 @@ angular.module("CourseCalculator.controllers")
 
     } else if (tab === "gps") {
       // Default to the committee vessel
-      if (!$scope.gps.destination)
+      if (!$scope.gps.destination) {
         $scope.gps.destination = $scope.course.marks.cb;
+        $scope.onPositionChanged($scope.gps.position);
+      }
 
     }
 
@@ -375,50 +458,8 @@ angular.module("CourseCalculator.controllers")
   
   // Called when the goelocation watch function returns a result
   $scope.onWatchPosition = function(position) {
-    // Clone this object so it can be cached - needs to be done manually
-    var temp = {
-      timestamp: position.timestamp,
-      date: new Date(position.timestamp),
-      coords: {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        altitude: position.coords.altitude,
-        accuracy: position.coords.accuracy,
-        altitudeAccuracy: position.coords.altitudeAccuracy,
-        heading: position.coords.heading,
-        speed: position.coords.speed
-      }
-    };
+    $scope.onPositionChanged(position);
 
-    var dials = {
-      distance: null,
-      bearing: null,
-      vmg: null,
-      turn: null,
-      ttw: null
-    };
-
-    if ($scope.gps.destination) {
-      var from = new LatLon(temp.coords.latitude, temp.coords.longitude);
-      dials.distance = from.rhumbDistanceTo($scope.gps.destination.wgs);
-      dials.bearing = from.rhumbBearingTo($scope.gps.destination.wgs);
-
-      // Calculate VMG
-      if (temp.coords.speed && temp.coords.heading) {
-        // Calculate turn - Right: positive, Left: negative
-        dials.turn = (360 + dials.bearing - temp.coords.heading) % 360;
-        if (dials.turn >= 180)
-          dials.turn = dials.turn - 360;
-
-        // Calculate VMG, and Time-to-Waypoint if VMG is positive
-        dials.vmg = temp.coords.speed * Math.cos(dials.turn.toRadians());
-        if (dials.vmg > 0)
-          dials.ttw = dials.distance / dials.vmg;
-      }
-    }
-
-    $scope.gps.position = temp;
-    $scope.gps.dials = dials;
     if ($ionicTabsDelegate.selectedIndex() == $scope.tabs.indexOf("gps"))
       $scope.$apply("gps");
   };

@@ -1,31 +1,38 @@
-<div class="card list options">
-  <ion-item class="item-input item-select item-select-left">
-    <ion-label class="input-label">To</ion-label>
-    <select ng-model="gps.destination"
-            ng-options="item as item.name for item in course.marks.allMarks | orderBy:'name'">
-    </select>
-  </ion-item>
-</div>
+<div class="gps">
+  <div class="dials">
+    <!-- The Waypoint selector -->
+    <div class="list options">
+      <ion-item class="item-input item-select item-select-left">
+        <ion-label class="input-label">Destination</ion-label>
+        <select ng-model="gps.destination"
+                ng-options="item as item.name for item in course.marks.allMarks | orderBy:'name'"
+                ng-change="onDestinationChanged($event)">
+        </select>
+      </ion-item>
+    </div>
 
-<compass-rose heading="gps.position.coords.heading" bearing="gps.dials.bearing" declination="configuration.course.declination">
-</compass-rose>
+    <!-- The instruments -->
+    <div class="instruments">
+      <div class="flex-fill">
+        <ion-slide-box show-pager="false">
+          <ion-slide>
+            <mfd title="Distance to Next" value="gps.dials.distance" type="distance"></mfd>
+          </ion-slide>
+          <ion-slide>
+            <mfd title="Time to next" value="gps.dials.ttw" type="time"></mfd>
+          </ion-slide>
+          <ion-slide>
+            <mfd title="Speed over Ground" value="gps.position.coords.speed" type="speed"></mfd>
+          </ion-slide>
+        </ion-slide-box>
+      </div>
+    </div>
 
-<!--
-<div style="position: relative; width: 100%; height: 300px;">
-  <img src="img/compass.svg"
-       style="position: absolute; top: 0; left: 50%; height: 100%; transform: translate(-50%, 0%) rotate(30deg);"/>
-  <img src="img/compass-bearing.svg"
-       style="position: absolute; top: 0; left: 50%; height: 100%; transform: translate(-50%, 0%) rotate(-5deg);"/>
-</div>
--->
-
-<div class="row">
-  <div class="col">
   </div>
-  <div class="col">
+  <div class="compass">
+    <div class="flex-fill">
+      <compass-rose heading="getHeading()" bearing="gps.dials.bearing" declination="configuration.course.declination">
+      </compass-rose>
+    </div>
   </div>
 </div>
-
-<pre>{{compass | json}}</pre>
-<pre>{{gps.dials | json}}</pre>
-<pre>{{gps | json}}</pre>

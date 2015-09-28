@@ -45,10 +45,10 @@
     </ion-tab>
 
     <!-- GPS -->
-    <ion-tab title="GPS" icon="ion-ios-navigate-outline" on-select="onTabSelect($event)">
+    <ion-tab title="GPS" icon="ion-ios-navigate-outline" scroll="false" on-select="onTabSelect($event)">
       <ion-view>
-        <ion-content has-bouncing="false" delegate-handle="gps">
-          <ng-include src="'templates/main-gps.html'"></ng-include>
+        <ion-content has-bouncing="false" scroll="false" delegate-handle="gps">
+          <ng-include src="'templates/main-gps.html'" style="height: 100%;"></ng-include>
         </ion-content>
       </ion-view>
     </ion-tab>

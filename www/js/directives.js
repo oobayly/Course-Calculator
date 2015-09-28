@@ -224,10 +224,18 @@ angular.module("CourseCalculator")
     restrict: "E",
     replace: false,
 
-    template: "<img src='img/compass.svg' style='transform: translate(-50%, 0) rotate({{getHeading()}});'/>" +
-      "<img src='img/compass-arrow.svg' style='transform: translate(-50%, 0) rotate({{getBearing()}});'/>",
+    template: "<img src='img/compass.svg' ng-class='{disabled: !hasHeading() && !hasBearing()}' style='transform: translate(-50%, 0) rotate({{getHeading()}});'/>" +
+      "<img src='img/compass-arrow.svg' style='transform: translate(-50%, 0) rotate({{getBearing()}});' ng-show='hasBearing()'/>",
 
     link: function($scope) {
+      $scope.hasBearing = function() {
+        return typeof $scope.bearing === "number";
+      };
+
+      $scope.hasHeading = function() {
+        return typeof $scope.heading === "number";
+      };
+
       $scope.getAngle = function(angle) {
         angle = (angle || 0);
         return ((angle + 360) % 360) + "deg";
@@ -338,6 +346,77 @@ angular.module("CourseCalculator")
       dp: "=decimals",
       value: "=value",
       showInches: "=showInches"
+    }
+  };
+})
+
+.directive("mfd", function($filter) {
+  return {
+    restric: "E",
+    replace: false,
+
+    template: "<div class='title'>{{title}}</div>"
+      + "<div class='value'>{{getValue()}}</div>"
+      + "<div class='units'>{{getUnits()}}</div>",
+
+    link: function($scope) {
+      $scope.getUnits = function() {
+        var val = $scope.value || 0;
+        switch ($scope.type) {
+          case "distance":
+            return val < 800 ? "metres" : "kilometres";
+
+          case "speed":
+            return "knots";
+
+          default:
+            return "\u00a0"; // &nbsp;
+
+        }
+      };
+
+      $scope.getValue = function() {
+        if (typeof $scope.value !== "number")
+          return "--";
+
+        switch ($scope.type) {
+          case "distance":
+            if ($scope.value >= 100000) {
+              return $filter("number")($scope.value / 1000, 0);
+            } else if ($scope.value > 10000) {
+              return $filter("number")($scope.value / 1000, 1);
+            } else if ($scope.value > 800) {
+              return $filter("number")($scope.value / 1000, 2);
+            } else {
+              return $filter("number")($scope.value, 0);
+            }
+
+          case "speed":
+            return $filter("number")($scope.value, 0);
+
+          case "time":
+            // If in the order of days
+            if ($scope.value > 86400)
+              return $filter("number")($scope.value / 86400, 0) + "d";
+
+            var hrs = Math.floor($scope.value / 3600) % 24;
+            var min = Math.floor($scope.value / 60) % 60;
+            var sec = Math.floor($scope.value) % 60;
+
+            return (hrs ? (hrs < 10 ? "0" + hrs : hrs) + ":" : "")
+              + (min < 10 ? "0" + min : min)
+              + ":" + (sec < 10 ? "0" + sec : sec);
+
+          default:
+            return $filter("number")($scope.value, 0);
+        }
+      };
+    },
+
+    scope: {
+      title: "@title",
+      value: "=value",
+      type: "@type"
     }
   };
 })
