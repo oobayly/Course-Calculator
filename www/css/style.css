@@ -163,7 +163,6 @@ mfd .units {
   -webkit-align-self: center;
   align-self: center;
   color: #444;
-  border-top: 1px solid #ddd;
 }
 @media screen and (orientation: landscape) {
 mfd .value .large {
