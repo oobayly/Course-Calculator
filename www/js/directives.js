@@ -355,11 +355,14 @@ angular.module("CourseCalculator")
     restric: "E",
     replace: false,
 
-    template: "<div class='title'>{{title}}</div>"
-      + "<div class='value'>{{getValue()}}</div>"
-      + "<div class='units'>{{getUnits()}}</div>",
+    templateUrl: "templates/directive-mfd.html",
 
     link: function($scope) {
+      $scope.display = {
+        large: "--",
+        small: null
+      };
+
       $scope.getUnits = function() {
         var val = $scope.value || 0;
         switch ($scope.type) {
@@ -375,48 +378,69 @@ angular.module("CourseCalculator")
         }
       };
 
-      $scope.getValue = function() {
-        if (typeof $scope.value !== "number")
-          return "--";
+      $scope.$watch("value", function(newValue, oldValue) {
+        if (typeof $scope.value !== "number") {
+          $scope.display.large = "--";
+          $scope.display.small = null;
+          return;
+        }
 
         switch ($scope.type) {
           case "distance":
-            if ($scope.value >= 100000) {
-              return $filter("number")($scope.value / 1000, 0);
-            } else if ($scope.value > 10000) {
-              return $filter("number")($scope.value / 1000, 1);
-            } else if ($scope.value > 800) {
-              return $filter("number")($scope.value / 1000, 2);
+            var text;
+            if ($scope.value > 10000) {
+              text = $filter("number")($scope.value / 1000, 1);
+            } else if ($scope.value > 1000) {
+              text = $filter("number")($scope.value / 1000, 2);
             } else {
-              return $filter("number")($scope.value, 0);
+              text = $filter("number")($scope.value, 0);
             }
 
+            var decimal = text.indexOf(".");
+            if (decimal === -1) {
+              $scope.display.large = text;
+              $scope.display.small = null;
+            } else {
+              $scope.display.large = text.substring(0, decimal - 1);
+              $scope.display.small = text.substr(decimal);
+            }
+            break;
+
           case "speed":
-            return $filter("number")($scope.value, 0);
+            $scope.display.large = $filter("number")($scope.value, 0);
+            $scope.display.small = null;
+            break;
 
           case "time":
-            // If in the order of days
-            if ($scope.value > 86400)
-              return $filter("number")($scope.value / 86400, 0) + "d";
-
+            var days = Math.floor($scope.value / 86400);
             var hrs = Math.floor($scope.value / 3600) % 24;
             var min = Math.floor($scope.value / 60) % 60;
             var sec = Math.floor($scope.value) % 60;
 
-            return (hrs ? (hrs < 10 ? "0" + hrs : hrs) + ":" : "")
-              + (min < 10 ? "0" + min : min)
-              + ":" + (sec < 10 ? "0" + sec : sec);
+            var hrsmin = (hrs < 10 ? "0" + hrs : hrs)
+                + ":" + (min < 10 ? "0" + min : min);
+
+            if (days) {
+              $scope.display.large = days + "d";
+              $scope.display.small = hrsmin;
+            } else {
+              $scope.display.large = hrsmin;
+              $scope.display.small = (sec < 10 ? "0" + sec : sec);
+
+            }
+            break;
 
           default:
-            return $filter("number")($scope.value, 0);
+            $scope.display.large = $filter("number")($scope.value, 0);
+            $scope.display.small = null;
         }
-      };
+      });
     },
 
     scope: {
       title: "@title",
       value: "=value",
-      type: "@type"
+      type: "@type",
     }
   };
 })

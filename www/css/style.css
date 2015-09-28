@@ -141,12 +141,21 @@ mfd .value {
   -webkit-flex: 1 1 auto;
   flex: 0 0  auto;
   -webkit-align-self: center;
-  font-size: 30vw;
-  line-height: 30vw;
   width: 100%;
   text-align: center;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
+}
+mfd .value > * {
+  display: inline-block;
+}
+mfd .value .large {
+  font-size: 20vw;
+  line-height: 20vw;
+}
+mfd .value .small {
+  font-size: 10vw;
+  line-height: 10vw;
 }
 mfd .units {
   -webkit-flex: 1 1 auto;
@@ -157,8 +166,12 @@ mfd .units {
   border-top: 1px solid #ddd;
 }
 @media screen and (orientation: landscape) {
-mfd .value {
-  font-size: 30vh;
-  line-height: 30vh;
+mfd .value .large {
+  font-size: 20vh;
+  line-height: 20vh;
+}
+mfd .value .small {
+  font-size: 10vh;
+  line-height: 10vh;
 }
 }
