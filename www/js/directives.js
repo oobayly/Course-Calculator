@@ -401,8 +401,8 @@ angular.module("CourseCalculator")
               $scope.display.large = text;
               $scope.display.small = null;
             } else {
-              $scope.display.large = text.substring(0, decimal - 1);
-              $scope.display.small = text.substr(decimal);
+              $scope.display.large = text.substring(0, decimal + 1);
+              $scope.display.small = text.substr(decimal + 1);
             }
             break;
 
