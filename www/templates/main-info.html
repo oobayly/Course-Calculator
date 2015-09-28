@@ -1,6 +1,12 @@
 <!-- Course -->
 <div class="list card info">
-  <ion-item class="item-divider">Course - {{configuration.course.type.description}}</ion-item>
+  <ion-item class="item-divider item-button-right">
+    <ion-label class="input-label">Course - {{configuration.course.type.description}}</ion-label>
+    <div class="buttons">
+      <button class="button icon ion-help-circled" ng-click="doShowHelp('info')"></button>
+    </div>
+  </ion-item>
+
   <div class="row">
     <div class="col"></div>
     <div class="col">Length</div>

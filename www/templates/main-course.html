@@ -1,5 +1,11 @@
 <div class="card list options">
-  <ion-item class="item-divider">Course options</ion-item>
+  <ion-item class="item-divider item-button-right">
+    <ion-label class="input-label">Course options</ion-label>
+    <div class="buttons">
+      <button class="button icon ion-help-circled" ng-click="doShowHelp('options-course')"></button>
+    </div>
+  </ion-item>
+
   <ion-item class="item-input">
     <ion-label class="input-label">Wind (&deg;M)</ion-label>
     <input ng-model="configuration.course.wind" type="number" min="0" max="359" step="5" placeholder="Wind direction">

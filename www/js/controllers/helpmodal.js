@@ -24,7 +24,9 @@ angular.module("CourseCalculator.controllers")
 
   // The list of available help topics
   this.topics = {
-    "options-fleet": {title: "Fleet options"}
+    "options-fleet": {title: "Fleet options"},
+    "options-course": {title: "Course options"},
+    "info": {title: "Information"}
   };
 
   // Shows the help modal

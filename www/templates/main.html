@@ -53,7 +53,7 @@
       </ion-view>
     </ion-tab>
     
-    <ion-tab title="Debug" icon="ion-social-codepen-outline" on-select="onTabSelect($event)">
+    <ion-tab title="Debug" icon="ion-social-codepen-outline" on-select="onTabSelect($event)" ng-if="false">
       <ion-view>
         <ion-content has-bouncing="false" delegate-handle="debug">
           <pre>{{configuration | json}}</pre>
