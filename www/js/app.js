@@ -5,7 +5,7 @@ angular.module("CourseCalculator", ["ionic",
                                      "CourseCalculator.controllers", "CourseCalculator.services"
                                     ])
 
-.run(function($ionicPlatform, $rootScope, $window) {
+.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,17 +19,24 @@ angular.module("CourseCalculator", ["ionic",
       StatusBar.styleLightContent();
     }
 
-    // Broadcast the pause event
-    $window.addEventListener("pause", function() {
+    // Broadcast cordova events
+    document.addEventListener("offline", function() {
+      $rootScope.$broadcast("cordova.offline");
+    }, false);
+    document.addEventListener("online", function() {
+      $rootScope.$broadcast("cordova.online");
+    }, false);
+    document.addEventListener("pause", function() {
       $rootScope.$broadcast("cordova.pause");
     }, false);
-    $window.addEventListener("resume", function() {
+    document.addEventListener("resume", function() {
       $rootScope.$broadcast("cordova.resume");
     }, false);
 
 
   });
 
+  // This is the local settings version, as opposed to the app version
   $rootScope.VERSION = "0.0.1";
 })
 

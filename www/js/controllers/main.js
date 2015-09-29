@@ -38,6 +38,19 @@ angular.module("CourseCalculator.controllers")
   };
   
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
+
+  // Raised when the app is paused
+  $scope.$on("cordova.pause", function(event) {
+    // Stop listening to the GPS, but don't persist the state so it can be resumed
+    if ($scope.gps.watch)
+      $scope.doToggleGPS(false);
+  });
+
+  // Raised when the app is paused
+  $scope.$on("cordova.resume", function(event) {
+    if (JSON.parse($window.localStorage.getItem("gps-state")))
+      $scope.doToggleGPS(false);
+  });
   
   // Raised when a modal is shown
   $rootScope.$on("modal.shown", function(event) {
@@ -176,7 +189,10 @@ angular.module("CourseCalculator.controllers")
   };
 
   // Called when the toggle GPS buttons is clicked
-  $scope.doToggleGPS = function() {
+  $scope.doToggleGPS = function(saveState) {
+    if (typeof saveState !== "boolean")
+      saveState = true;
+
     if ($scope.gps.watch) {
       navigator.geolocation.clearWatch($scope.gps.watch);
       $scope.gps.watch = null;
@@ -189,7 +205,8 @@ angular.module("CourseCalculator.controllers")
     }
 
     // Save the state
-    $window.localStorage.setItem("gps-state", JSON.stringify($scope.gps.watch ? true : false));
+    if (saveState)
+      $window.localStorage.setItem("gps-state", JSON.stringify($scope.gps.watch ? true : false));
   };
 
   // Gets the bearing from one point to another
