@@ -5,7 +5,7 @@ angular.module("CourseCalculator", ["ionic",
                                      "CourseCalculator.controllers", "CourseCalculator.services"
                                     ])
 
-.run(function($ionicPlatform, $rootScope) {
+.run(function($ionicPlatform, $rootScope, $window) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -24,6 +24,7 @@ angular.module("CourseCalculator", ["ionic",
       $rootScope.$broadcast("cordova.offline");
     }, false);
     document.addEventListener("online", function() {
+      $rootScope.loadMapsAPI();
       $rootScope.$broadcast("cordova.online");
     }, false);
     document.addEventListener("pause", function() {
@@ -35,6 +36,28 @@ angular.module("CourseCalculator", ["ionic",
 
 
   });
+
+  // Loads the google maps scripts
+  $rootScope.loadMapsAPI = function() {
+    // No need if maps are already loaded
+    if ($window.google && $window.google.maps)
+      return;
+
+    // Make sure we're connected
+    if (navigator.connection && (navigator.connection.type === Connection.NONE))
+      return;
+
+    var script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAfszj4UuwlX01nQ-oVUsYgB3NbEahz8pU&sensor=true&callback=onMapsApiLoaded";
+    script.type = "text/javascript";
+    document.head.appendChild(script);
+  };
+
+  $window.onMapsApiLoaded = function(response) {
+    $rootScope.$broadcast("maps.loaded");
+  };
+
+  $rootScope.loadMapsAPI();
 
   // This is the local settings version, as opposed to the app version
   $rootScope.VERSION = "0.0.1";

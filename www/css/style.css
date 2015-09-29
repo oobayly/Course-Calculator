@@ -10,6 +10,13 @@ body {
   padding: 0 16px;
 }
 
+/* An item that shows an error message */
+.item-error {
+  overflow: visible;
+  white-space: normal;
+  color: red;
+}
+
 /* Add suffix for input labels in options lists */
 .list.options .item-input .input-label:after {
   content: ":";

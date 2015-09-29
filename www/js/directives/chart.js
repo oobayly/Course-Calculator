@@ -1,23 +1,9 @@
 angular.module("CourseCalculator")
 
 .directive("chart", function($rootScope, $timeout, $window, Course) {
-  var iconBoat = {
-    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-    fillColor: "white",
-    fillOpacity: 1,
-    scale: 5,
-    strokeColor: "blue",
-    strokeWeight: 2
-  };
+  var iconBoat = null;
 
-  var iconMark = {
-    path: google.maps.SymbolPath.CIRCLE,
-    fillColor: "black",
-    fillOpacity: 0,
-    scale: 10,
-    strokeColor: "yellow",
-    strokeWeight: 5
-  };
+  var iconMark = null;
 
   var createLines = function(course) {
     var lines = [];
@@ -126,89 +112,124 @@ angular.module("CourseCalculator")
     return marks;
   };
 
+  var loadIcons = function() {
+    iconBoat = {
+      path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+      fillColor: "white",
+      fillOpacity: 1,
+      scale: 5,
+      strokeColor: "blue",
+      strokeWeight: 2
+    };
+
+    iconMark = {
+      path: google.maps.SymbolPath.CIRCLE,
+      fillColor: "black",
+      fillOpacity: 0,
+      scale: 10,
+      strokeColor: "yellow",
+      strokeWeight: 5
+    };
+  };
+
+  var loadMap = function($scope, $element, $attrs) {
+    loadIcons();
+
+    var center, zoom;
+    if ($scope.configuration) {
+      center = {
+        lat: $scope.configuration.course.startPosition.lat || 0,
+        lng: $scope.configuration.course.startPosition.lon || 0
+      };
+      zoom = 13;
+    } else {
+      center = {lat: 0, lng: 0};
+      zoom = 8;
+    }
+
+    $scope.map = new google.maps.Map($element[0], {
+      center: center,
+      zoom: zoom,
+      streetViewControl: false
+    });
+
+    $scope.$watch("course", function(newValue, oldValue) {
+      $scope.drawCourse();
+    }, true);
+
+    google.maps.event.addDomListener($window, "resize", function() {
+      $timeout(function() {
+        google.maps.event.trigger($scope.map, "resize");
+        $scope.map.fitBounds($scope.bounds);
+      });
+    });
+
+    $scope.drawCourse = function() {
+      // Clear any existing markers and lines
+      if ($scope.markers) {
+        angular.forEach($scope.markers, function(item, index) {
+          item.setMap(null);
+        });
+      }
+      if ($scope.lines) {
+        angular.forEach($scope.lines, function(item, index) {
+          item.setMap(null);
+        });
+      }
+
+      if (!$scope.course)
+        return;
+
+      $scope.markers = createMarks($scope.course);
+
+      // The line of the course
+      $scope.lines = createLines($scope.course);
+
+      // Add everything to the map
+      angular.forEach($scope.markers, function(item, index) {
+        item.setMap($scope.map);
+        item.addListener("click", function(e) {
+          if ($scope.markClickCallback)
+            $scope.markClickCallback({mark: this.courseMark});
+        });
+      });
+      angular.forEach($scope.lines, function(item, index) {
+        item.setMap($scope.map);
+      });
+
+      // Zoom to the bounds
+      $scope.bounds = new google.maps.LatLngBounds();
+      angular.forEach($scope.markers, function(item, index) {
+        $scope.bounds.extend(item.position);
+      });
+
+      $timeout(function() {
+        $scope.map.fitBounds($scope.bounds);
+      });
+    };
+
+    $timeout(function() {
+      $scope.drawCourse();
+    });
+  };
+
   return {
     restrict: "E",
     replace: true,
 
-    template: "<div class='google-maps'></div>",
+    templateUrl: "templates/directive-chart.html",
 
     link: function($scope, $element, $attrs) {
-      var center, zoom;
-      if ($scope.configuration) {
-        center = {
-          lat: $scope.configuration.course.startPosition.lat || 0,
-          lng: $scope.configuration.course.startPosition.lon || 0
-        };
-        zoom = 13;
+      if ($window.google && $window.google.maps) {
+        // Load immediately if maps are available
+        loadMap($scope, $element, $attrs);
+
       } else {
-        center = {lat: 0, lng: 0};
-        zoom = 8;
+        // Wait for the maps loaded event to fire
+        $scope.$on("maps.loaded", function(event) {
+          loadMap($scope, $element, $attrs);
+        });
       }
-
-      $scope.map = new google.maps.Map($element[0], {
-        center: center,
-        zoom: zoom,
-        streetViewControl: false
-      });
-
-      $scope.$watch("course", function(newValue, oldValue) {
-        $scope.drawCourse();
-      }, true);
-
-      google.maps.event.addDomListener($window, "resize", function() {
-        $timeout(function() {
-          google.maps.event.trigger($scope.map, "resize");
-          $scope.map.fitBounds($scope.bounds);
-        });
-      });
-
-      $scope.drawCourse = function() {
-        // Clear any existing markers and lines
-        if ($scope.markers) {
-          angular.forEach($scope.markers, function(item, index) {
-            item.setMap(null);
-          });
-        }
-        if ($scope.lines) {
-          angular.forEach($scope.lines, function(item, index) {
-            item.setMap(null);
-          });
-        }
-
-        if (!$scope.course)
-          return;
-
-        $scope.markers = createMarks($scope.course);
-
-        // The line of the course
-        $scope.lines = createLines($scope.course);
-
-        // Add everything to the map
-        angular.forEach($scope.markers, function(item, index) {
-          item.setMap($scope.map);
-          item.addListener("click", function(e) {
-            if ($scope.markClickCallback)
-              $scope.markClickCallback({mark: this.courseMark});
-          });
-        });
-        angular.forEach($scope.lines, function(item, index) {
-          item.setMap($scope.map);
-        });
-
-        // Zoom to the bounds
-        $scope.bounds = new google.maps.LatLngBounds();
-        angular.forEach($scope.markers, function(item, index) {
-          $scope.bounds.extend(item.position);
-        });
-
-        $timeout(function() {
-          $scope.map.fitBounds($scope.bounds);
-        });
-      };
-
-      $timeout(function() {
-        $scope.drawCourse();
-      });
     },
 
     scope: {
