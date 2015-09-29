@@ -34,7 +34,8 @@ angular.module("CourseCalculator", ["ionic",
       $rootScope.$broadcast("cordova.resume");
     }, false);
 
-
+    // Attempt to load the Maps API
+    $rootScope.loadMapsAPI();
   });
 
   // Loads the google maps scripts
@@ -47,8 +48,12 @@ angular.module("CourseCalculator", ["ionic",
     if (navigator.connection && (navigator.connection.type === Connection.NONE))
       return;
 
+    // Use the same url as defined in head
+    var src = document.getElementById("google-maps-script").src
+      + "&callback=onMapsApiLoaded";
+
     var script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAfszj4UuwlX01nQ-oVUsYgB3NbEahz8pU&sensor=true&callback=onMapsApiLoaded";
+    script.src = src;
     script.type = "text/javascript";
     document.head.appendChild(script);
   };
@@ -56,8 +61,6 @@ angular.module("CourseCalculator", ["ionic",
   $window.onMapsApiLoaded = function(response) {
     $rootScope.$broadcast("maps.loaded");
   };
-
-  $rootScope.loadMapsAPI();
 
   // This is the local settings version, as opposed to the app version
   $rootScope.VERSION = "0.0.1";
