@@ -110,10 +110,17 @@ angular.module("CourseCalculator.controllers")
 
   // Called when the enter latitude button is clicked
   $scope.doEnterLatitude = function() {
-    LocationModal.show({
-      showLat: true,
+    $scope.doEnterLocation({
       lat: $scope.configuration.course.startPosition.lat
-    }).then(function(result) {
+    });
+  };
+
+  $scope.doEnterLocation = function(params) {
+    params.showLat = typeof params.lat === "number";
+    params.showLon = typeof params.lon === "number";
+
+    LocationModal.show(params)
+    .then(function(result) {
       // May have an empty result
       if (!result)
         return;
@@ -128,10 +135,9 @@ angular.module("CourseCalculator.controllers")
 
   // Called when the enter longitude button is clicked
   $scope.doEnterLongitude = function() {
-    LocationModal.show({
-      showLon: true,
+    $scope.doEnterLocation({
       lon: $scope.configuration.course.startPosition.lon
-    }, $scope.onLocationModalCallback);
+    });
   };
   
   // Called when the GPS button is clicked
