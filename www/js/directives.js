@@ -188,7 +188,7 @@ angular.module("CourseCalculator")
             break;
 
           case "speed":
-            $scope.display.large = $filter("number")($scope.value, 0);
+            $scope.display.large = $filter("number")($scope.value * 3600 / 1852, 0);
             $scope.display.small = null;
             break;
 
