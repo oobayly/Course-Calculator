@@ -157,6 +157,10 @@ angular.module("CourseCalculator")
       $scope.drawCourse();
     }, true);
 
+    $scope.$watch("position", function(newValue, oldValue) {
+      onPositionChanged($scope, newValue, oldValue);
+    }, true);
+
     google.maps.event.addDomListener($window, "resize", function() {
       $timeout(function() {
         google.maps.event.trigger($scope.map, "resize");
@@ -213,6 +217,52 @@ angular.module("CourseCalculator")
     });
   };
 
+  var onPositionChanged = function($scope, newValue, oldValue) {
+    var position = $scope.position;
+
+    if (position && position.coords) {
+      var marker = $scope.positionMarker;
+      var icon;
+      if (marker) {
+        icon = marker.icon;
+      } else {
+        icon = angular.copy(iconBoat);
+        icon.fillColor = "lime";
+        icon.strokeColor = "black";
+
+        marker = new google.maps.Marker({
+          position: {lat: 0, lng: 0},
+          icon: icon,
+          title: "Me"
+          });
+
+      }
+
+      marker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+
+      if (position.coords.heading) {
+        icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
+        icon.rotation = position.coords.heading;
+      } else {
+        icon.path = google.maps.SymbolPath.CIRCLE;
+        icon.rotation = 0;
+      }
+      marker.setIcon(icon);
+
+      if (!$scope.positionMarker) {
+        marker.setMap($scope.map);
+        $scope.positionMarker = marker;
+      }
+
+    } else {
+      // Remove the marker if it's there
+      if ($scope.positionMarker) {
+        $scope.positionMarker.setMap(null);
+        $scope.positionMarker = null;
+      }
+    }
+  };
+
   return {
     restrict: "E",
     replace: true,
@@ -234,8 +284,8 @@ angular.module("CourseCalculator")
 
     scope: {
       course: "=course",
-      location: "=location",
-      markClickCallback: "&markClick"
+      markClickCallback: "&markClick",
+      position: "=position"
     }
   };
 })

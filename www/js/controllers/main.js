@@ -443,6 +443,20 @@ angular.module("CourseCalculator.controllers")
 
   // Called when a mark on the chart is clicked
   $scope.onMarkClick = function(mark) {
+    var msg = "Do you want set " + mark.name + " as your destination?";
+
+    // Prompt the user to navigate to that marker
+    $ionicPopup.confirm({
+      title: "Navigate to waypoint",
+      template: msg,
+      okText: "Yes",
+      cancelText: "No"
+    }).then(function(result) {
+      if (result) {
+        $scope.gps.destination = mark;
+        $ionicTabsDelegate.select($scope.tabs.indexOf("gps"));
+      }
+    });
   };
   
   // Called when a tab is selected
