@@ -1,7 +1,7 @@
 angular.module("CourseCalculator.controllers")
 
 .controller("MainCtrl", function($filter, $http, $q, $rootScope, $scope, $timeout, $window,
-                                 $ionicModal, $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
+                                 $ionicModal, $ionicPopover, $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
                                  Classes, Course, geomag, HelpModal, LocationModal) {
   
   $scope.classes = Classes.getClasses();
@@ -23,9 +23,7 @@ angular.module("CourseCalculator.controllers")
   $scope.course = null;
   
   $scope.courses = Course.types;
-  
-  $scope.mapUpdateRequired = true; // Flag that indicates whether the map should be updated
-  
+
   $scope.gps = {
     watch: null, //
     position: null, // The current position
@@ -37,6 +35,10 @@ angular.module("CourseCalculator.controllers")
     dials: null
   };
   
+  $scope.mapUpdateRequired = true; // Flag that indicates whether the map should be updated
+
+  $scope.popoverMore = null; // The more menu popover
+
   $scope.tabs = ["fleet", "course", "chart", "info", "gps", "debug"];
 
   // Raised when the app is paused
@@ -63,6 +65,13 @@ angular.module("CourseCalculator.controllers")
   $scope.init = function() {
     $scope.configuration = $scope.loadConfiguration();
     
+    // Preload the popover
+    $ionicPopover.fromTemplateUrl("templates/popover-main.html", {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.popoverMore = popover;
+    });
+
     // Watch the configuration for any changes
     $scope.$watch("configuration", function() {
       $scope.saveConfiguration();
@@ -187,6 +196,21 @@ angular.module("CourseCalculator.controllers")
     }).catch(function(error) {
       console.log(error);
     });
+  };
+
+  // Called by the load config button
+  $scope.doLoadConfig = function() {
+    $scope.popoverMore.hide();
+  };
+
+  // Called by the share button
+  $scope.doShare = function() {
+    $scope.popoverMore.hide();
+  };
+
+  // Called by the about button
+  $scope.doShowAbout = function() {
+    $scope.popoverMore.hide()
   };
 
   // Called when a help topic should be displayed

@@ -1,10 +1,14 @@
 <ion-view ng-controller="MainCtrl">
-  <ion-nav-title>Course Calculator</ion-nav-title>
-  
-  <ion-nav-buttons side="right">
+  <ion-nav-buttons side="left">
     <button class="button icon-left ion-android-locate" ng-class="{'icon-opaque': getIsGPSState()}" ng-click="doToggleGPS()">
       {{gps.watch ? 'On' : 'Off'}}
     </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>Course Calculator</ion-nav-title>
+
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-more" ng-click="popoverMore.show($event)"></button>
   </ion-nav-buttons>
 
   <ion-tabs class="has-header tabs-icon-top tabs-stable">
@@ -63,5 +67,26 @@
     </ion-tab>
 
   </ion-tabs>
+
+  <script id="templates/popover-main.html" type="text/ng-template">
+    <ion-popover-view>
+      <ion-content>
+        <ion-list>
+          <ion-item class="item-icon-left" ng-click="doShare()">
+            <i class="icon ion-share"></i>
+            Share config
+          </ion-item>
+          <ion-item class="item-icon-left" ng-click="doLoadConfig()">
+            <i class="icon ion-folder"></i>
+            Load config
+          </ion-item>
+          <ion-item class="item-icon-left" ng-click="doShowAbout()">
+            <i class="icon ion-information"></i>
+            About
+          </ion-item>
+        </ion-content>
+      </ion-popover-view>
+    </ion-list>
+  </script>
 
 </ion-view>
