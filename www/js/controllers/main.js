@@ -332,13 +332,7 @@ angular.module("CourseCalculator.controllers")
   $scope.getLatitude = function(value) {
     return Dms.toLat(value, "dms", 2, true);
   };
-  
-  // Gets the length of the line (in metres)
-  $scope.getLineLength = function() {
-    var fleet = $scope.configuration.fleet;
-    return fleet.class.loa * fleet.starters * fleet.spacing / 100;
-  };
-  
+
   // Gets the formatted latitude
   $scope.getLongitude = function(value) {
     return Dms.toLon(value, "dms", 2, true);
