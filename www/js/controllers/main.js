@@ -2,11 +2,11 @@ angular.module("CourseCalculator.controllers")
 
 .controller("MainCtrl", function($filter, $http, $q, $rootScope, $scope, $timeout, $window,
                                  $ionicModal, $ionicPopover, $ionicPopup, $ionicScrollDelegate, $ionicTabsDelegate,
-                                 Classes, Course, geomag, HelpModal, LocationModal) {
+                                 Classes, Configuration, geomag, HelpModal, LocationModal) {
   
-  $scope.classes = Classes.getClasses();
+  $scope.classes = Classes.getClasses(); // The list of classes
   
-  //
+  // The compass properties
   $scope.compass = {
     watch: null,
     options: {
@@ -15,15 +15,13 @@ angular.module("CourseCalculator.controllers")
     heading: null
   };
 
-  $scope.configuration = {
-    fleet: {},
-    course: {}
-  };
+  $scope.configuration = null;
   
   $scope.course = null;
   
-  $scope.courses = Course.types;
+  $scope.courses = Configuration.getCourseTypes(); // The list of course types
 
+  // The GPS properties
   $scope.gps = {
     watch: null, //
     position: null, // The current position
@@ -63,7 +61,12 @@ angular.module("CourseCalculator.controllers")
     
   // Initialise the controller
   $scope.init = function() {
-    $scope.configuration = $scope.loadConfiguration();
+    Configuration.load()
+    .then(function(config) {
+      console.log("Got configuration");
+      console.log(config);
+      $scope.configuration = config;
+    });
     
     // Preload the popover
     $ionicPopover.fromTemplateUrl("templates/popover-main.html", {
@@ -74,8 +77,8 @@ angular.module("CourseCalculator.controllers")
 
     // Watch the configuration for any changes
     $scope.$watch("configuration", function() {
-      $scope.saveConfiguration();
-      $scope.course = Course.getCourse($scope.configuration);
+      $scope.configuration.save();
+      $scope.course = $scope.configuration.calculate();
       $scope.mapUpdateRequired = true;
     }, true);
 
@@ -217,15 +220,12 @@ angular.module("CourseCalculator.controllers")
     }
 
     // Make sure the data is valid
-    var parsed;
-    try {
-      parsed = JSON.parse(config);
-    } catch (e) {
+    Configuration.load(config)
+    .then(function(response) {
+      $scope.configuration = response;
+    }).catch(function(error) {
       $scope.showError({message: "The configuration entered is not valid."});
-      return;
-    }
-
-    $scope.loadConfiguration(config);
+    });
   };
 
   // Opens the URL in an external window
@@ -292,38 +292,13 @@ angular.module("CourseCalculator.controllers")
     
     return Math.round(brg + 360) % 360;
   };
-  
-  // Gets the default configuration
-  $scope.getDefaultConfiguration = function() {
-    var configuration = {
-      fleet: {
-        starters: 20,
-        spacing: 120,
-        tackAngle: 75
-      },
-      course: {
-        wind: 225,
-        type: $scope.courses.triangle,
-        startPosition: {lat: 52.933019, lon: -8.309992},
-        startPercentage: 33,
-        declination: -4.1
-      }
-    };
-    
-    // Default to SOD
-    angular.forEach($scope.classes, function(item, index) {
-      if (item.name === "Shannon One Design")
-        configuration.fleet.class = item;
-    });
-    
-    return configuration;
-  };
-  
+
   // Gets the distance between the two points
   $scope.getDistance = function(start, end) {
     return start.rhumbDistanceTo(end);
   };
   
+  // Gets the heading
   $scope.getHeading = function() {
     var heading = null;
 
@@ -371,60 +346,6 @@ angular.module("CourseCalculator.controllers")
   // Returns a flag indicating whether geolocation is available.
   $scope.hasGeoLocation = function() {
     return navigator.geolocation ? true : false;
-  };
-  
-  // Loads the specified configuration
-  $scope.loadConfiguration = function(configuration) {
-    var oldVersion = localStorage.getItem("version") || "";
-    if ($scope.VERSION !== oldVersion) {
-      console.log("Version has changed from " + oldVersion + " to " + $scope.VERSION + " - removing configuration");
-      $window.localStorage.removeItem("configuration");
-      $window.localStorage.setItem("version", $scope.VERSION);
-    }
-
-    // Attempt to load a cached version is none is provided
-    if (!configuration) {
-      configuration = $window.localStorage.getItem("configuration");
-      if (configuration) {
-        try {
-          configuration = JSON.parse(configuration);
-        } catch (e) {}
-      }
-    }
-    
-    // Otherwise load the defaults
-    if (!configuration)
-      configuration = $scope.getDefaultConfiguration();
-    
-    // Update course references to equal the loaded objects
-    angular.forEach($scope.courses, function(item, key) {
-      if (item.description === configuration.course.type.description)
-        $scope.courses[key] = configuration.course.type;
-    });
-
-    // If the class is editable, then update the custom definition, otherwise use the declared def
-    if (configuration.fleet.class.canEdit) {
-      var custom = $scope.classes[0];
-      custom.loa = configuration.fleet.class.loa;
-      custom.lwl = configuration.fleet.class.lwl || null;
-      configuration.fleet.class = custom;
-
-    } else {
-      for (var i = 0; i < $scope.classes.length; i++) {
-        if ($scope.classes[i].name === configuration.fleet.class.name) {
-          configuration.fleet.class = $scope.classes[i];
-        }
-      }
-    }
-
-
-
-    for (var i = 0; i < $scope.classes.length; i++) {
-      if ($scope.classes[i].name === configuration.fleet.class.name)
-        $scope.classes[i] = configuration.fleet.class;
-    }
-
-    return configuration;
   };
 
   // Called when the destination waypoint is changed

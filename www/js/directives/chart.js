@@ -1,6 +1,6 @@
 angular.module("CourseCalculator")
 
-.directive("chart", function($rootScope, $timeout, $window, Course) {
+.directive("chart", function($rootScope, $timeout, $window) {
   var iconBoat = null;
 
   var iconMark = null;

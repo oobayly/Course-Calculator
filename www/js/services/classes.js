@@ -1,6 +1,6 @@
 angular.module("CourseCalculator.services")
 
-.service("Classes", function($window) {
+.service("Classes", function($filter) {
   // The class definition
   function Class(params) {
     this.name = params.name;
@@ -20,11 +20,16 @@ angular.module("CourseCalculator.services")
   this.__items = null;
   
   // Gets all the classes 
-  this.getClasses = function() {
+  this.getClasses = function(name) {
     if (!this.__items)
       this.__initClasses();
     
-    return angular.copy(this.__items);
+    if (name) {
+      var found = $filter("filter")(this.__items, {name: name});
+      return found.length ? found[0] : null;
+    } else {
+      return this.__items;
+    }
   };
   
   // Initialises the list of classes available
