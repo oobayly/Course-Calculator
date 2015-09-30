@@ -61,9 +61,6 @@ angular.module("CourseCalculator", ["ionic",
   $window.onMapsApiLoaded = function(response) {
     $rootScope.$broadcast("maps.loaded");
   };
-
-  // This is the local settings version, as opposed to the app version
-  $rootScope.VERSION = "0.0.1";
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
