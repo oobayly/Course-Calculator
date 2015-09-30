@@ -309,8 +309,8 @@ angular.module("CourseCalculator.controllers")
   $scope.getHeading = function() {
     var heading = null;
 
-    // Only use gps heading of speed gr
-    if ($scope.gps.position)
+    // Only use gps heading if moving
+    if ($scope.gps.position && $scope.gps.position.coords.heading && $scope.gps.position.coords.speed)
       heading = $scope.gps.position.coords.heading;
 
     if ((heading == null) && $scope.compass.heading && ($scope.compass.heading.trueHeading))
