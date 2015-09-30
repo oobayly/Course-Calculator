@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="net.tipstrade.racecoursemanager"
-        version="0.0.8"
+        version="0.0.9"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         xmlns:gap="http://phonegap.com/ns/1.0">
   <!-- App -->
   <name>Course Calculator</name>
-  <description></description>
+  <description>
+    A set of tools for race officers to aid mark laying.
+  </description>
   <author href="https://github.com/oobayly"/>
   <content src="index.html"/>
   <!-- Plugins -->
