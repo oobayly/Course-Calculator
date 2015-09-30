@@ -235,11 +235,6 @@ angular.module("CourseCalculator.controllers")
     });
   };
 
-  // Opens the URL in an external window
-  $scope.doOpenExternalUrl = function(url) {
-    $window.open(url, "_system");
-  };
-
   // Called by the share button
   $scope.doShare = function() {
     $scope.popoverMore.hide();

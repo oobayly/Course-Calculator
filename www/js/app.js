@@ -61,6 +61,11 @@ angular.module("CourseCalculator", ["ionic",
   $window.onMapsApiLoaded = function(response) {
     $rootScope.$broadcast("maps.loaded");
   };
+
+  // Opens the URL in an external window
+  $rootScope.doOpenExternalUrl = function(url) {
+    $window.open(url, "_system");
+  };
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
