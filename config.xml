@@ -10,17 +10,28 @@
   <author href="https://github.com/oobayly"/>
   <content src="index.html"/>
   <!-- Plugins -->
+  <gap:plugin name="cordova-plugin-appversion" source="npm"/>
   <gap:plugin name="cordova-plugin-customurlscheme" source="npm">
     <param name="URL_SCHEME" value="coursemanager"/>
   </gap:plugin>
   <gap:plugin name="cordova-plugin-device" source="npm"/>
   <gap:plugin name="cordova-plugin-device-orientation" source="npm"/>
   <gap:plugin name="cordova-plugin-geolocation" source="npm"/>
+  <gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>
   <gap:plugin name="cordova-plugin-network-information" source="npm"/>
+  <gap:plugin name="cordova-plugin-x-socialsharing" source="npm"/>
   <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
+  <!-- Plugins for local build -->
+  <plugin name="cordova-plugin-appversion"/>
+  <plugin name="cordova-plugin-customurlscheme">
+    <param name="URL_SCHEME" value="coursemanager"/>
+  </plugin>
+  <plugin name="cordova-plugin-device"/>
   <plugin name="cordova-plugin-device-orientation"/>
   <plugin name="cordova-plugin-geolocation"/>
+  <plugin name="cordova-plugin-inappbrowser"/>
   <plugin name="cordova-plugin-network-information"/>
+  <plugin name="cordova-plugin-x-socialsharing"/>
   <plugin name="cordova-plugin-whitelist"/>
   <!-- Whitelisting -->
   <access origin="*"/>
