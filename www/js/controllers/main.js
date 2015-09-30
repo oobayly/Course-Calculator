@@ -58,7 +58,13 @@ angular.module("CourseCalculator.controllers")
     // when the tab is next selected
     $scope.mapUpdateRequired = true;
   });
-    
+
+  $scope.$on('popover.hidden', function() {
+    // The modal screws up the google maps element, so force the map to be updated
+    // when the tab is next selected
+    $scope.mapUpdateRequired = true;
+  });
+
   // Initialise the controller
   $scope.init = function() {
     Configuration.load()
