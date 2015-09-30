@@ -1,0 +1,14 @@
+<ion-list>
+  <ion-item>
+    &copy; John Bayly
+    2015
+    <span ng-show="currentYear > 2015">- {{currentYear}}</span>
+  </ion-item>
+  <ion-item>
+    Version {{version}}
+  </ion-item>
+  <ion-item class="item-icon-left" ng-click="doOpenExternalUrl('https://www.github.com/oobayly')">
+    <i class="icon ion-earth"></i>
+    github.com/oobayly
+  </ion-item>
+</ion-list>

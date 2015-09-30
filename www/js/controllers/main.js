@@ -199,18 +199,58 @@ angular.module("CourseCalculator.controllers")
   };
 
   // Called by the load config button
-  $scope.doLoadConfig = function() {
-    $scope.popoverMore.hide();
+  $scope.doLoadConfig = function(config) {
+    if (!config) {
+      $scope.popoverMore.hide();
+
+      $ionicPopup.prompt({
+        title: "Load config",
+        template: "Past the configuration you have received",
+        inputType: "text",
+      }).then(function(response) {
+        $scope.doLoadConfig(response);
+      });
+
+      return;
+    }
+
+    // Make sure the data is valid
+    var parsed;
+    try {
+      parsed = JSON.parse(config);
+    } catch (e) {
+      $scope.showError({message: "The configuration entered is not valid."});
+      return;
+    }
+
+    $scope.loadConfiguration(config);
+  };
+
+  // Opens the URL in an external window
+  $scope.doOpenExternalUrl = function(url) {
+    $window.open(url, "_system");
   };
 
   // Called by the share button
   $scope.doShare = function() {
     $scope.popoverMore.hide();
+    $window.plugins.socialsharing.share(JSON.stringify($scope.configuration));
   };
 
   // Called by the about button
   $scope.doShowAbout = function() {
     $scope.popoverMore.hide()
+
+    var scope = $scope.$new();
+    scope.version = typeof AppVersion !== "undefined" ? AppVersion.version : "unknown";
+    scope.currentYear = new Date().getFullYear();
+
+    $ionicPopup.alert({
+      scope: scope,
+      title: "About Course Calculator",
+      //template: message,
+      templateUrl: "templates/popup-about.html"
+    });
   };
 
   // Called when a help topic should be displayed
