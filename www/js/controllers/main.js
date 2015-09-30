@@ -59,18 +59,19 @@ angular.module("CourseCalculator.controllers")
     $scope.mapUpdateRequired = true;
   });
 
+  // Raised when the popover is hidden
   $scope.$on('popover.hidden', function() {
     // The modal screws up the google maps element, so force the map to be updated
     // when the tab is next selected
-    $scope.mapUpdateRequired = true;
+    if ($scope.tabs[$ionicTabsDelegate.selectedIndex()] !== "chart") {
+      $scope.mapUpdateRequired = true;
+    }
   });
 
   // Initialise the controller
   $scope.init = function() {
     Configuration.load()
     .then(function(config) {
-      console.log("Got configuration");
-      console.log(config);
       $scope.configuration = config;
     });
     

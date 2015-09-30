@@ -155,6 +155,12 @@ angular.module("CourseCalculator")
 
     $scope.$watch("course", function(newValue, oldValue) {
       $scope.drawCourse();
+
+      // Fit bounds may have to be done again if the map isn't visible
+      if (!$element[0].offsetHeight && !$element[0].offsetWidth) {
+        console.log("Deferring fit bounds");
+        $scope.doFitBounds = true;
+      }
     }, true);
 
     $scope.$watch("position", function(newValue, oldValue) {
@@ -164,7 +170,11 @@ angular.module("CourseCalculator")
     google.maps.event.addDomListener($window, "resize", function() {
       $timeout(function() {
         google.maps.event.trigger($scope.map, "resize");
-        $scope.map.fitBounds($scope.bounds);
+
+        // If changes were made when not visible, fit bounds is required
+        if ($scope.doFitBounds)
+          $scope.map.fitBounds($scope.bounds);
+        $scope.doFitBounds = false;
       });
     });
 
@@ -207,9 +217,10 @@ angular.module("CourseCalculator")
         $scope.bounds.extend(item.position);
       });
 
-      $timeout(function() {
+      // Only fit bounds if the map has a size
+      if ($element[0].offsetWidth && $element[0].offsetHeight) {
         $scope.map.fitBounds($scope.bounds);
-      });
+      }
     };
 
     $timeout(function() {

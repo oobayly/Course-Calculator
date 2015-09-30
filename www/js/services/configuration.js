@@ -238,8 +238,6 @@ angular.module("CourseCalculator.services")
     delete clone.fleet.class.$$hashKey;
     delete clone.course.type.$$hashKey;
 
-    console.log("Saving configuration");
-    console.log(clone);
     $window.localStorage.setItem(STORAGE_KEY, JSON.stringify(clone));
   };
 
@@ -259,7 +257,6 @@ angular.module("CourseCalculator.services")
 
     var params = null;
     if (text) {
-      console.log("Parsing configuration");
       try {
         params = JSON.parse(text);
       } catch (e) {
@@ -272,13 +269,10 @@ angular.module("CourseCalculator.services")
     if (!params) {
       var cached = $window.localStorage.getItem(STORAGE_KEY);
       if (cached) {
-        console.log("Using cached configuration");
         params =JSON.parse(cached);
       }
 
     }
-
-    console.log(params);
 
     var config = new Configuration(params);
     q.resolve(config);
