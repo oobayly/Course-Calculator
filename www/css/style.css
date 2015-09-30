@@ -1,3 +1,7 @@
+/* ===========================
+   HTML
+   =========================*/
+
 /* Remove Roboto font
    https://code.google.com/p/gmaps-api-issues/issues/detail?id=5880
 */
@@ -5,51 +9,20 @@ body {
   font-family: 'Helvetica Neue', 'Segoe UI', sans-serif !important;
 }
 
+
+/* ===========================
+   Buttons
+   =========================*/
+
 /* Add padding to a button bar */
 .button-bar-padded {
   padding: 0 16px;
 }
 
-/* An item that shows an error message */
-.item-error {
-  overflow: visible;
-  white-space: normal;
-  color: red;
-}
 
-/* Add suffix for input labels in options lists */
-.list.options .item-input .input-label:after {
-  content: ":";
-}
-
-/* Make the list item transparent */
-.list-transparent .item {
-  border-color: transparent !important;
-  background-color: transparent !important;
-}
-
-/* Break at newlines, breaks and where necessary */
-.item-pre {
-  white-space: pre-line;
-}
-
-/* Make select box in list left-aligned */
-.item-select.item-select-left select {
-  right: auto !important;
-  padding: 13px 45px 15px 0px !important;
-  direction: ltr !important;
-  width: 65% !important;
-}
-
-/* Don't allow text wrapping on the first row */
-.info .row:nth-of-type(1) > .col {
-  white-space: nowrap;
-}
-
-/* Makes the icon opaque */
-.icon-opaque:before {
-  opacity: 0.5;
-}
+/* ===========================
+   Directives
+   =========================*/
 
 /* The compass rose */
 compass-rose {
@@ -116,6 +89,11 @@ compass-rose img.disabled {
 .gps .compass {
 }
 
+
+/* ===========================
+   Flex
+   =========================*/
+
 /* Hack to make sure height 100% inside of a flex child */
 .flex-fill {
   position: absolute;
@@ -123,6 +101,85 @@ compass-rose img.disabled {
   top: 0;
   right: 0;
   bottom: 0;
+}
+
+
+/* ===========================
+   Icons
+   =========================*/
+
+/* Makes the icon opaque */
+.icon-opaque:before {
+  opacity: 0.5;
+}
+
+
+/* ===========================
+   Lists
+   =========================*/
+
+/* An item that shows an error message */
+.item-error {
+  overflow: visible;
+  white-space: normal;
+  color: red;
+}
+
+/* An item-note that is left aligned */
+.item-note-left {
+  float: left !important;
+}
+
+/* Add suffix for input labels in options lists */
+.list.options .item-input .input-label:after {
+  content: ":";
+}
+
+/* Break at newlines, breaks and where necessary */
+.item-pre {
+  white-space: pre-line;
+}
+
+/* Make select box in list left-aligned */
+.item-select.item-select-left select {
+  right: auto !important;
+  padding: 13px 45px 15px 0px !important;
+  direction: ltr !important;
+  width: 65% !important;
+}
+
+/* Make the list item transparent */
+.list-transparent .item {
+  border-color: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Don't allow text wrapping on the first row */
+.info .row:nth-of-type(1) > .col {
+  white-space: nowrap;
+}
+
+
+/* ===========================
+   Popovers
+   =========================*/
+
+/* A popover that adjusts its height to the content
+   http://forum.ionicframework.com/t/popover-sizing/8251/16
+   Need to use scroll="false" in the popup's content element
+*/
+.popover-auto-height {
+  height: auto !important;
+}
+.platform-android .popover-auto-height {
+  margin-top: 10px;
+}
+.platform-ios .popover-auto-height {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.popover-auto-height ion-content {
+  position: relative;
 }
 
 /* MFD display */
