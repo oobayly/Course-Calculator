@@ -205,10 +205,12 @@ angular.module("CourseCalculator.controllers")
 
       $ionicPopup.prompt({
         title: "Load config",
-        template: "Past the configuration you have received",
+        template: "Paste the configuration you have received",
         inputType: "text",
+        inputPlaceholder: "Paste configuration here"
       }).then(function(response) {
-        $scope.doLoadConfig(response);
+        if (response)
+          $scope.doLoadConfig(response);
       });
 
       return;
