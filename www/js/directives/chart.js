@@ -158,7 +158,6 @@ angular.module("CourseCalculator")
 
       // Fit bounds may have to be done again if the map isn't visible
       if (!$element[0].offsetHeight && !$element[0].offsetWidth) {
-        console.log("Deferring fit bounds");
         $scope.doFitBounds = true;
       }
     }, true);
