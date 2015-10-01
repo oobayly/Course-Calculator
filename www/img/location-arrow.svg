@@ -15,11 +15,11 @@
    viewBox="0 0 99.999997 99.999996"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r"
+   inkscape:version="0.48.4 r9939"
    inkscape:export-filename="/tmp/bluedot_retina_arrow.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
-   sodipodi:docname="bluedot_retina_arrow.svg">
+   sodipodi:docname="location-arrow.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -95,6 +95,17 @@
          offset="1"
          id="stop5734" />
     </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#Pointer"
+       id="radialGradient3013"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.60610127,0.40007946,-0.60868747,0.92213244,-19.406648,-21.546951)"
+       cx="11.597264"
+       cy="-11.715456"
+       fx="11.597264"
+       fy="-11.715456"
+       r="26.417152" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -103,17 +114,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="50.361325"
-     inkscape:cy="54.548293"
+     inkscape:zoom="5.3999998"
+     inkscape:cx="-9.4444447"
+     inkscape:cy="49.999998"
      inkscape:document-units="px"
-     inkscape:current-layer="svg2"
+     inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
-     inkscape:window-width="1920"
-     inkscape:window-height="1055"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
+     inkscape:window-width="1366"
+     inkscape:window-height="718"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="1"
      showguides="false"
      fit-margin-top="0"
@@ -128,66 +139,83 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
-    <g
-       id="pointer"
-       transform="translate(33,12)">
-      <circle
-         r="15"
-         cy="38"
-         cx="17"
-         id="path4212"
-         style="opacity:1;fill:url(#radialGradient5748);fill-opacity:1;stroke:#235ade;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99607843" />
-      <circle
-         style="opacity:1;fill:url(#radialGradient4228);fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="path4220"
-         cx="11.995564"
-         cy="30.780136"
-         r="3.7880721" />
-      <path
-         inkscape:connector-curvature="0"
-         style="opacity:1;fill:url(#radialGradient5786);fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99607843"
-         d="m 17.156256,-1.9073486e-6 -17,27.5000009073486 0.0078,0 a 20,20 0 0 1 16.992188,-9.5 20,20 0 0 1 16.6875,8.994141 L 17.156244,-1.9073486e-6 Z"
-         id="rect5764" />
-    </g>
-  </g>
-  <g
-     id="g5872"
+     id="layer1"
      transform="translate(50,50)"
-     style="opacity:0.5">
+     style="display:inline">
+    <circle
+       sodipodi:ry="15"
+       sodipodi:rx="15"
+       sodipodi:cy="38"
+       sodipodi:cx="17"
+       d="M 32,38 C 32,46.284271 25.284271,53 17,53 8.7157288,53 2,46.284271 2,38 2,29.715729 8.7157288,23 17,23 c 8.284271,0 15,6.715729 15,15 z"
+       style="fill:url(#radialGradient5748);fill-opacity:1;stroke:#235ade;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.99607843;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path4212"
+       cx="17"
+       cy="38"
+       r="15"
+       transform="translate(-17,-38)" />
+    <circle
+       sodipodi:ry="3.7880721"
+       sodipodi:rx="3.7880721"
+       sodipodi:cy="30.780136"
+       sodipodi:cx="11.995564"
+       d="m 15.783637,30.780136 c 0,2.092095 -1.695978,3.788072 -3.788073,3.788072 -2.092094,0 -3.7880716,-1.695977 -3.7880716,-3.788072 0,-2.092094 1.6959776,-3.788072 3.7880716,-3.788072 2.092095,0 3.788073,1.695978 3.788073,3.788072 z"
+       r="3.7880721"
+       cy="30.780136"
+       cx="11.995564"
+       id="path4220"
+       style="fill:url(#radialGradient4228);fill-opacity:1;stroke:none"
+       transform="translate(-17,-38)" />
+    <path
+       id="rect5764"
+       d="m 0.156256,-38.000002 -17,27.500001 0.0078,0 a 20,20 0 0 1 16.992188,-9.5 20,20 0 0 1 16.6875,8.994141 l -16.6875,-26.994142 z"
+       style="fill:url(#radialGradient3013);fill-opacity:1;stroke:none"
+       inkscape:connector-curvature="0" />
     <g
-       id="waves"
-       style="">
+       style="opacity:0.5"
+       id="waves">
       <circle
-         style="opacity:1;fill:none;fill-opacity:1;stroke:#0031f9;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99607843"
+         d="M 49,0 C 49,27.061953 27.061953,49 0,49 -27.061953,49 -49,27.061953 -49,0 c 0,-27.061953 21.938047,-49 49,-49 27.061953,0 49,21.938047 49,49 z"
+         r="49"
+         cy="0"
+         cx="0"
          id="path5816"
-         cx="0"
-         cy="0"
-         r="49" />
+         style="fill:none;stroke:#0031f9;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.99607843;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:cx="0"
+         sodipodi:cy="0"
+         sodipodi:rx="49"
+         sodipodi:ry="49" />
       <circle
-         r="43"
-         cy="0"
-         cx="0"
+         d="M 43,0 C 43,23.748244 23.748244,43 0,43 -23.748244,43 -43,23.748244 -43,0 c 0,-23.748244 19.251756,-43 43,-43 23.748244,0 43,19.251756 43,43 z"
+         style="fill:none;stroke:#0031f9;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.99607843;stroke-dasharray:none;stroke-dashoffset:0"
          id="circle5818"
-         style="opacity:1;fill:none;fill-opacity:1;stroke:#0031f9;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99607843" />
+         cx="0"
+         cy="0"
+         r="43"
+         sodipodi:cx="0"
+         sodipodi:cy="0"
+         sodipodi:rx="43"
+         sodipodi:ry="43" />
       <animate
-         repeatCount="indefinite"
-         values="0;1"
+         id="animate4008"
+         attributeName="opacity"
          dur="1500ms"
-         attributeName="opacity" />
+         values="0;.5"
+         repeatCount="indefinite" />
       <animateTransform
-         repeatCount="indefinite"
-         values="0;1"
-         dur="1500ms"
+         id="animateTransform4010"
+         attributeName="transform"
          type="scale"
-         attributeName="transform" />
+         dur="1500ms"
+         values="0;1"
+         repeatCount="indefinite" />
     </g>
   </g>
 </svg>
