@@ -140,12 +140,11 @@ angular.module("CourseCalculator")
       position: {lat: 0, lng: 0},
       flat: true,
       optimized: false, // Don't use canvas
-      icon: new google.maps.MarkerImage(
-        "img/location-arrow.svg",
-        null, null,
-        new google.maps.Point(25, 25),
-        new google.maps.Size(50, 50)
-      ),
+      icon: {
+        url: "img/location-arrow.svg",
+        anchor: new google.maps.Point(25, 25),
+        scaledSize: new google.maps.Size(50, 50),
+      },
       title: "My location"
     });
 
@@ -153,12 +152,11 @@ angular.module("CourseCalculator")
       position: {lat: 0, lng: 0},
       flat: true,
       optimized: false, // Don't use canvas
-      icon: new google.maps.MarkerImage(
-        "img/location.svg",
-        null, null,
-        new google.maps.Point(25, 25),
-        new google.maps.Size(50, 50)
-      ),
+      icon: {
+        url: "img/location.svg",
+        anchor: new google.maps.Point(25, 25),
+        scaledSize: new google.maps.Size(50, 50),
+      },
       title: "My location"
     });
   };
