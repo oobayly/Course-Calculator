@@ -138,6 +138,8 @@ angular.module("CourseCalculator")
 
     markLocation.moving = new google.maps.Marker({
       position: {lat: 0, lng: 0},
+      flat: true,
+      optimized: false, // Don't use canvas
       icon: new google.maps.MarkerImage(
         "img/location-arrow.svg",
         null, null,
@@ -147,7 +149,6 @@ angular.module("CourseCalculator")
       title: "My location"
     });
 
-    // http://jsfiddle.net/ryanoc/86ejf/
     markLocation.stationary = new google.maps.Marker({
       position: {lat: 0, lng: 0},
       flat: true,
@@ -262,7 +263,7 @@ angular.module("CourseCalculator")
 
     if (position && position.coords) {
       var marker;
-      if (position.coords.heading && position.coords.speed) {
+      if (false && position.coords.heading && position.coords.speed) {
         markLocation.stationary.setMap(null);
         marker = markLocation.moving;
         marker.icon.rotation = position.coords.heading;
