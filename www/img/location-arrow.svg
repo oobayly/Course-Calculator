@@ -22,6 +22,23 @@
    sodipodi:docname="location-arrow.svg">
   <defs
      id="defs4">
+		<style type="text/css"><![CDATA[
+			#waves {
+				animation: pulse 1.5s linear 0s infinite;
+			}
+
+			@keyframes pulse {
+				0% {
+					opacity: 0;
+					transform: scale(0, 0);
+				}
+				100% {
+					opacity: 0.5;
+					transform: scale(1, 1);
+				}
+			}
+
+		]]></style>
     <linearGradient
        inkscape:collect="always"
        id="Centre">
@@ -203,19 +220,6 @@
          sodipodi:cy="0"
          sodipodi:rx="43"
          sodipodi:ry="43" />
-      <animate
-         id="animate4008"
-         attributeName="opacity"
-         dur="1500ms"
-         values="0;.5"
-         repeatCount="indefinite" />
-      <animateTransform
-         id="animateTransform4010"
-         attributeName="transform"
-         type="scale"
-         dur="1500ms"
-         values="0;1"
-         repeatCount="indefinite" />
     </g>
   </g>
 </svg>
