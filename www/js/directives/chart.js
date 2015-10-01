@@ -138,15 +138,13 @@ angular.module("CourseCalculator")
 
     markLocation.moving = new google.maps.Marker({
       position: {lat: 0, lng: 0},
-      icon: {
-        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        fillColor: "lime",
-        fillOpacity: 1,
-        scale: 5,
-        strokeColor: "black",
-        strokeWeight: 2
-      },
-//      title: "My location"
+      icon: new google.maps.MarkerImage(
+        "img/location-arrow.svg",
+        null, null,
+        new google.maps.Point(25, 25),
+        new google.maps.Size(50, 50)
+      ),
+      title: "My location"
     });
 
     // http://jsfiddle.net/ryanoc/86ejf/
@@ -155,10 +153,10 @@ angular.module("CourseCalculator")
       flat: true,
       optimized: false, // Don't use canvas
       icon: new google.maps.MarkerImage(
-        "img/bluedot_retina.png",
+        "img/location.svg",
         null, null,
-        new google.maps.Point(8, 8),
-        new google.maps.Size(17, 17)
+        new google.maps.Point(25, 25),
+        new google.maps.Size(50, 50)
       ),
       title: "My location"
     });
