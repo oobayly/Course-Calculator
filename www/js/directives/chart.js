@@ -136,22 +136,24 @@ angular.module("CourseCalculator")
       strokeWeight: 5
     };
 
+    // This just uses the pointer from location-arrow.svg
     markLocation.moving = new google.maps.Marker({
       position: {lat: 0, lng: 0},
-      flat: true,
-      optimized: false, // Don't use canvas
       icon: {
-        url: "img/location-arrow.svg",
-        anchor: new google.maps.Point(25, 25),
-        scaledSize: new google.maps.Size(50, 50),
+        path: "m 0.156256,-38.000002 -17,27.500001 0.0078,0 a 20,20 0 0 1 16.992188,-9.5 20,20 0 0 1 16.6875,8.994141 l -16.6875,-26.994142 z",
+        fillColor: "#235ade",
+        fillOpacity: .90,
+        scale: 0.5,
+        strokeWeight: 0,
+        strokeColor: "ffffff"
       },
-      title: "My location"
     });
 
+    // Scale the marker to 50%
     markLocation.stationary = new google.maps.Marker({
       position: {lat: 0, lng: 0},
       flat: true,
-      optimized: false, // Don't use canvas
+      optimized: false, // Don't use canvas so the animations work
       icon: {
         url: "img/location.svg",
         anchor: new google.maps.Point(25, 25),
@@ -260,29 +262,20 @@ angular.module("CourseCalculator")
     var position = $scope.position;
 
     if (position && position.coords) {
-      var marker;
-      if (false && position.coords.heading && position.coords.speed) {
-        markLocation.stationary.setMap(null);
-        marker = markLocation.moving;
-        marker.icon.rotation = position.coords.heading;
+      markLocation.stationary.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+      markLocation.stationary.setMap($scope.map);
+
+      if (position.coords.heading && position.coords.speed) {
+        markLocation.moving.icon.rotation = position.coords.heading;
+        markLocation.moving.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+        markLocation.moving.setMap($scope.map);
       } else {
         markLocation.moving.setMap(null);
-        marker = markLocation.stationary;
-      }
-
-      marker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
-
-      if (!$scope.positionMarker) {
-        marker.setMap($scope.map);
-        $scope.positionMarker = marker;
       }
 
     } else {
-      // Remove the marker if it's there
-      if ($scope.positionMarker) {
-        $scope.positionMarker.setMap(null);
-        $scope.positionMarker = null;
-      }
+      markLocation.moving.setMap(null);
+      markLocation.stationary.setMap(null);
     }
   };
 
