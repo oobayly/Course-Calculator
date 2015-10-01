@@ -5,6 +5,11 @@ angular.module("CourseCalculator")
 
   var iconMark = null;
 
+  var markLocation = {
+    stationary: null,
+    moving: null
+  };
+
   var createLines = function(course) {
     var lines = [];
 
@@ -130,6 +135,33 @@ angular.module("CourseCalculator")
       strokeColor: "yellow",
       strokeWeight: 5
     };
+
+    markLocation.moving = new google.maps.Marker({
+      position: {lat: 0, lng: 0},
+      icon: {
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        fillColor: "lime",
+        fillOpacity: 1,
+        scale: 5,
+        strokeColor: "black",
+        strokeWeight: 2
+      },
+//      title: "My location"
+    });
+
+    // http://jsfiddle.net/ryanoc/86ejf/
+    markLocation.stationary = new google.maps.Marker({
+      position: {lat: 0, lng: 0},
+      flat: true,
+      optimized: false, // Don't use canvas
+      icon: new google.maps.MarkerImage(
+        "img/bluedot_retina.png",
+        null, null,
+        new google.maps.Point(8, 8),
+        new google.maps.Size(17, 17)
+      ),
+      title: "My location"
+    });
   };
 
   var loadMap = function($scope, $element, $attrs) {
@@ -231,33 +263,17 @@ angular.module("CourseCalculator")
     var position = $scope.position;
 
     if (position && position.coords) {
-      var marker = $scope.positionMarker;
-      var icon;
-      if (marker) {
-        icon = marker.icon;
+      var marker;
+      if (position.coords.heading && position.coords.speed) {
+        markLocation.stationary.setMap(null);
+        marker = markLocation.moving;
+        marker.icon.rotation = position.coords.heading;
       } else {
-        icon = angular.copy(iconBoat);
-        icon.fillColor = "lime";
-        icon.strokeColor = "black";
-
-        marker = new google.maps.Marker({
-          position: {lat: 0, lng: 0},
-          icon: icon,
-          title: "Me"
-          });
-
+        markLocation.moving.setMap(null);
+        marker = markLocation.stationary;
       }
 
       marker.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
-
-      if (position.coords.heading) {
-        icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
-        icon.rotation = position.coords.heading;
-      } else {
-        icon.path = google.maps.SymbolPath.CIRCLE;
-        icon.rotation = 0;
-      }
-      marker.setIcon(icon);
 
       if (!$scope.positionMarker) {
         marker.setMap($scope.map);
