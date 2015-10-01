@@ -72,6 +72,10 @@
     <ion-popover-view class="popover-auto-height">
       <ion-content scroll="false">
         <ion-list>
+          <ion-item class="item-icon-left" ng-show="gps.position" ng-click="doShowMyLocation()">
+            <i class="icon ion-location"></i>
+            Show my location
+          </ion-item>
           <ion-item class="item-icon-left" ng-click="doShare()">
             <i class="icon ion-share"></i>
             Share config

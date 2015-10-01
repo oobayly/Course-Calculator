@@ -262,6 +262,18 @@ angular.module("CourseCalculator.controllers")
     HelpModal.show(topic);
   };
 
+  // Called by the my location button
+  $scope.doShowMyLocation = function() {
+    $scope.popoverMore.hide()
+
+    if (!$scope.gps.position)
+      return;
+
+    // Show the chart and push a flag into the position
+    $ionicTabsDelegate.select($scope.tabs.indexOf("chart"));
+    $scope.gps.position.showOnChart = true;
+  };
+
   // Called when the toggle GPS buttons is clicked
   $scope.doToggleGPS = function(saveState) {
     if (typeof saveState !== "boolean")

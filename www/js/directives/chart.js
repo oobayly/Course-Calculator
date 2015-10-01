@@ -195,6 +195,14 @@ angular.module("CourseCalculator")
 
     $scope.$watch("position", function(newValue, oldValue) {
       onPositionChanged($scope, newValue, oldValue);
+
+      if ($scope.position.showOnChart) {
+        delete $scope.position.showOnChart;
+        $scope.map.setCenter({
+          lat: $scope.position.coords.latitude,
+          lng: $scope.position.coords.longitude
+        });
+      }
     }, true);
 
     google.maps.event.addDomListener($window, "resize", function() {
@@ -262,12 +270,17 @@ angular.module("CourseCalculator")
     var position = $scope.position;
 
     if (position && position.coords) {
-      markLocation.stationary.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+      var latlng = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      markLocation.stationary.setPosition(latlng);
       markLocation.stationary.setMap($scope.map);
 
       if (position.coords.heading && position.coords.speed) {
         markLocation.moving.icon.rotation = position.coords.heading;
-        markLocation.moving.setPosition({lat: position.coords.latitude, lng: position.coords.longitude});
+        markLocation.moving.setPosition(latlng);
         markLocation.moving.setMap($scope.map);
       } else {
         markLocation.moving.setMap(null);
