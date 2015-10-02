@@ -81,6 +81,38 @@ angular.module("CourseCalculator")
     return lines;
   };
 
+  var createLocationMarkers = function($scope) {
+    // This just uses the pointer from location-arrow.svg
+    markLocation.moving = new google.maps.Marker({
+      map: $scope.map,
+      position: {lat: 0, lng: 0},
+      icon: {
+        path: "m 0.156256,-38.000002 -17,27.500001 0.0078,0 a 20,20 0 0 1 16.992188,-9.5 20,20 0 0 1 16.6875,8.994141 l -16.6875,-26.994142 z",
+        fillColor: "#235ade",
+        fillOpacity: .90,
+        scale: 0.5,
+        strokeWeight: 0,
+        strokeColor: "ffffff"
+      },
+      visible: false
+    });
+
+    // Scale the marker to 50%
+    markLocation.stationary = new google.maps.Marker({
+      map: $scope.map,
+      position: {lat: 0, lng: 0},
+      flat: true,
+      optimized: false, // Don't use canvas so the animations work
+      icon: {
+        url: "img/location.svg",
+        anchor: new google.maps.Point(25, 25),
+        scaledSize: new google.maps.Size(50, 50),
+      },
+      title: "My location",
+      visible: false
+    });
+  };
+
   var createMarker = function(mark, icon) {
     var marker = new google.maps.Marker({
       icon: icon,
@@ -135,37 +167,9 @@ angular.module("CourseCalculator")
       strokeColor: "yellow",
       strokeWeight: 5
     };
-
-    // This just uses the pointer from location-arrow.svg
-    markLocation.moving = new google.maps.Marker({
-      position: {lat: 0, lng: 0},
-      icon: {
-        path: "m 0.156256,-38.000002 -17,27.500001 0.0078,0 a 20,20 0 0 1 16.992188,-9.5 20,20 0 0 1 16.6875,8.994141 l -16.6875,-26.994142 z",
-        fillColor: "#235ade",
-        fillOpacity: .90,
-        scale: 0.5,
-        strokeWeight: 0,
-        strokeColor: "ffffff"
-      },
-    });
-
-    // Scale the marker to 50%
-    markLocation.stationary = new google.maps.Marker({
-      position: {lat: 0, lng: 0},
-      flat: true,
-      optimized: false, // Don't use canvas so the animations work
-      icon: {
-        url: "img/location.svg",
-        anchor: new google.maps.Point(25, 25),
-        scaledSize: new google.maps.Size(50, 50),
-      },
-      title: "My location"
-    });
   };
 
   var loadMap = function($scope, $element, $attrs) {
-    loadIcons();
-
     var center, zoom;
     if ($scope.configuration) {
       center = {
@@ -184,6 +188,10 @@ angular.module("CourseCalculator")
       streetViewControl: false
     });
 
+
+    loadIcons();
+    createLocationMarkers($scope);
+
     $scope.$watch("course", function(newValue, oldValue) {
       $scope.drawCourse();
 
@@ -196,12 +204,13 @@ angular.module("CourseCalculator")
     $scope.$watch("position", function(newValue, oldValue) {
       onPositionChanged($scope, newValue, oldValue);
 
-      if ($scope.position.showOnChart) {
+      if ($scope.position && $scope.position.showOnChart) {
         delete $scope.position.showOnChart;
         $scope.map.setCenter({
           lat: $scope.position.coords.latitude,
           lng: $scope.position.coords.longitude
         });
+        $scope.map.setZoom(14);
       }
     }, true);
 
@@ -275,20 +284,26 @@ angular.module("CourseCalculator")
         lng: position.coords.longitude
       };
 
+      if (!markLocation.stationary.getVisible())
+        markLocation.stationary.setVisible(true);
+
       markLocation.stationary.setPosition(latlng);
-      markLocation.stationary.setMap($scope.map);
 
       if (position.coords.heading && position.coords.speed) {
         markLocation.moving.icon.rotation = position.coords.heading;
         markLocation.moving.setPosition(latlng);
-        markLocation.moving.setMap($scope.map);
+
+        if (!markLocation.moving.getVisible())
+          markLocation.moving.setVisible(true);
+
       } else {
-        markLocation.moving.setMap(null);
+        markLocation.moving.setVisible(false);
+
       }
 
     } else {
-      markLocation.moving.setMap(null);
-      markLocation.stationary.setMap(null);
+      markLocation.moving.setVisible(false);
+      markLocation.stationary.setVisible(false);
     }
   };
 
