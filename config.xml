@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="net.tipstrade.racecoursemanager"
-        version="0.0.19"
+        version="0.0.20"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         xmlns:gap="http://phonegap.com/ns/1.0">
@@ -21,7 +21,7 @@
   <gap:plugin name="cordova-plugin-geolocation" source="npm"/>
   <gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>
   <gap:plugin name="cordova-plugin-network-information" source="npm"/>
-  <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>
+  <gap:plugin name="cordova-plugin-splashscreen" source="npm" version="2.0.0" />
   <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
   <gap:plugin name="cordova-plugin-x-socialsharing" source="npm"/>
   <!-- Plugins for local build -->
@@ -34,7 +34,7 @@
   <plugin name="cordova-plugin-geolocation"/>
   <plugin name="cordova-plugin-inappbrowser"/>
   <plugin name="cordova-plugin-network-information"/>
-  <plugin name="cordova-plugin-splashscreen"/>
+  <plugin name="cordova-plugin-splashscreen" version="2.0.0"/>
   <plugin name="cordova-plugin-whitelist"/>
   <plugin name="cordova-plugin-x-socialsharing"/>
   <!-- Whitelisting -->

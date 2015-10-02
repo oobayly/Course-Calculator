@@ -21,7 +21,7 @@
     "cordova-plugin-geolocation",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-network-information",
-    "cordova-plugin-splashscreen",
+    "cordova-plugin-splashscreen@2.0.0",
     "cordova-plugin-whitelist",
     "cordova-plugin-x-socialsharing"
   ],
