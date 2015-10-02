@@ -10,9 +10,11 @@ angular.module("CourseCalculator.controllers")
   $scope.compass = {
     watch: null,
     options: {
-      frequency: 250 // Limit refresh rate to 4hz
+      frequency: 100 // Limit refresh rate to 10hz
     },
-    heading: null
+    damped: null,
+    maxSamples: 5, // Damp over 1/2 second
+    samples: []
   };
 
   $scope.configuration = null;
@@ -99,26 +101,10 @@ angular.module("CourseCalculator.controllers")
       if (ionic.Platform.isIOS())
         $scope.compass.options.filter = 1;
 
-      $scope.compass.watch = navigator.compass.watchHeading(function(result) {
-        // Cache and adjust for declination
-        $scope.compass.heading = result;
-        $scope.compass.heading.trueHeading = $scope.compass.heading.magneticHeading + ($scope.configuration.course.declination || 0);
-        $scope.$apply("compass");
-      }, function(error) {
-        var msg;
-        switch (error.code) {
-          case error.COMPASS_INTERNAL_ERR:
-            msg = "An internal compass error occurred";
-            break;
-          case error.COMPASS_NOT_SUPPORTED:
-            msg = "Compass is not supported";
-            break;
-          default:
-            msg = "An unexpected error occurred watching the compass";
-            break;
-        }
-        console.log(msg);
-      }, $scope.compass.options);
+      $scope.compass.watch = navigator.compass.watchHeading(
+        $scope.onWatchCompass,
+        $scope.onWatchCompassError,
+        $scope.compass.options);
     }
 
     // For testing - select the tab being worked on
@@ -320,8 +306,8 @@ angular.module("CourseCalculator.controllers")
     if ($scope.gps.position && $scope.gps.position.coords.heading && $scope.gps.position.coords.speed)
       heading = $scope.gps.position.coords.heading;
 
-    if ((heading == null) && $scope.compass.heading && ($scope.compass.heading.trueHeading))
-      heading = $scope.compass.heading.trueHeading;
+    if ((heading == null) && $scope.compass.damped)
+      heading = $scope.compass.damped.trueHeading;
 
     return heading;
   };
@@ -488,6 +474,60 @@ angular.module("CourseCalculator.controllers")
     $ionicScrollDelegate.scrollTop(false);
   };
   
+  // Called when the compass watch function returns a result
+  $scope.onWatchCompass = function(compass) {
+    // Don't cache the returned object
+    compass = angular.copy(compass);
+
+    // Correct for declination
+    compass.trueHeading = compass.magneticHeading + ($scope.configuration.course.declination || 0);
+
+    // Push the result into the headings list
+    $scope.compass.samples.push(compass);
+    if ($scope.compass.samples.length > $scope.compass.maxSamples)
+      $scope.compass.samples.shift();
+
+    // Linear weight the average
+    var now = new Date().getTime();
+    var sumTrue = 0;
+    var sumMagnetic = 0;
+    var weight = 0;
+    angular.forEach($scope.compass.samples, function(item, index) {
+      var w = $scope.compass.maxSamples + 1;
+      sumTrue += w * item.trueHeading;
+      sumMagnetic += w * item.magneticHeading;
+      weight += w;
+    });
+
+    $scope.compass.damped = {
+      magneticHeading: sumMagnetic / weight,
+      trueHeading: sumTrue / weight,
+      timestamp: compass.timestamp
+    };
+
+    console.log(compass.trueHeading + " was damped to " + $scope.compass.damped.trueHeading);
+
+    // Cache and adjust for declination
+    $scope.$apply("compass");
+  };
+
+  // Called when the compass watch function returns an error
+  $scope.onWatchCompassError = function(error) {
+    var msg;
+    switch (error.code) {
+      case error.COMPASS_INTERNAL_ERR:
+        msg = "An internal compass error occurred";
+        break;
+      case error.COMPASS_NOT_SUPPORTED:
+        msg = "Compass is not supported";
+        break;
+      default:
+        msg = "An unexpected error occurred watching the compass";
+        break;
+    }
+    console.log(msg);
+  }
+
   // Called when the goelocation watch function returns a result
   $scope.onWatchPosition = function(position) {
     $scope.onPositionChanged(position);
