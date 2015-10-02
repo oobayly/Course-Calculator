@@ -505,8 +505,6 @@ angular.module("CourseCalculator.controllers")
       timestamp: compass.timestamp
     };
 
-    console.log(compass.trueHeading + " was damped to " + $scope.compass.damped.trueHeading);
-
     // Cache and adjust for declination
     $scope.$apply("compass");
   };
