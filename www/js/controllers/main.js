@@ -108,8 +108,6 @@ angular.module("CourseCalculator.controllers")
     }
 
     $timeout(function() {
-      if (navigator.splashscreen)
-        navigator.splashscreen.hide();
     });
   };
 
