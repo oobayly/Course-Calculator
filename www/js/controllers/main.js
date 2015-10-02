@@ -107,9 +107,9 @@ angular.module("CourseCalculator.controllers")
         $scope.compass.options);
     }
 
-    // For testing - select the tab being worked on
     $timeout(function() {
-      //$ionicTabsDelegate.select(4);
+      if (navigator.splashscreen)
+        navigator.splashscreen.hide();
     });
   };
 

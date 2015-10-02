@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="net.tipstrade.racecoursemanager"
-        version="0.0.18"
+        version="0.0.19"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         xmlns:gap="http://phonegap.com/ns/1.0">
@@ -21,8 +21,9 @@
   <gap:plugin name="cordova-plugin-geolocation" source="npm"/>
   <gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>
   <gap:plugin name="cordova-plugin-network-information" source="npm"/>
-  <gap:plugin name="cordova-plugin-x-socialsharing" source="npm"/>
+  <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>
   <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
+  <gap:plugin name="cordova-plugin-x-socialsharing" source="npm"/>
   <!-- Plugins for local build -->
   <plugin name="cordova-plugin-appversion"/>
   <plugin name="cordova-plugin-customurlscheme">
@@ -33,8 +34,9 @@
   <plugin name="cordova-plugin-geolocation"/>
   <plugin name="cordova-plugin-inappbrowser"/>
   <plugin name="cordova-plugin-network-information"/>
-  <plugin name="cordova-plugin-x-socialsharing"/>
+  <plugin name="cordova-plugin-splashscreen"/>
   <plugin name="cordova-plugin-whitelist"/>
+  <plugin name="cordova-plugin-x-socialsharing"/>
   <!-- Whitelisting -->
   <access origin="*"/>
   <!-- Preferences -->
@@ -45,7 +47,7 @@
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="SplashScreenDelay" value="10000"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>

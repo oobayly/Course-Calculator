@@ -21,8 +21,9 @@
     "cordova-plugin-geolocation",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-network-information",
-    "cordova-plugin-x-socialsharing",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-x-socialsharing"
   ],
   "cordovaPlatforms": [
     "android"
