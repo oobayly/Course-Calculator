@@ -118,7 +118,7 @@ angular.module("CourseCalculator.services")
       eta: ($this.course.startPercentage || 0) / 100,
       windMag: $this.course.wind || 0,
       declination: $this.course.declination || 0,
-      line: $this.fleet.getLineLength() | 100,
+      line: $this.fleet.getLineLength() || 100,
       tackAngle: $this.fleet.tackAngle || 0,
       marks: {
         list: [],
