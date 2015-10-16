@@ -124,7 +124,8 @@ angular.module("CourseCalculator")
     return marker;
   };
 
-  var createMarks = function(course) {
+  var createMarks = function($scope) {
+    var course = $scope.course;
     var marks = [];
 
     // The course marks
@@ -144,9 +145,29 @@ angular.module("CourseCalculator")
     // Committee boat
     var cbIcon = angular.copy(iconBoat);
     cbIcon.rotation = course.windTrue;
-    marks.push(createMarker(course.marks.cb, cbIcon));
+    var cbMarker = createMarker(course.marks.cb, cbIcon);
+    cbMarker.setOptions({draggable: true});
+    marks.push(cbMarker);
 
-    return marks;
+    // Add everything to the map
+    angular.forEach(marks, function(item, index) {
+      item.setMap($scope.map);
+      item.addListener("click", function(e) {
+        if ($scope.markClickCallback)
+          $scope.markClickCallback({mark: this.courseMark});
+      });
+    });
+
+    // Hook the drag event for the committee boat
+    google.maps.event.addListener(cbMarker, "dragend", function(e) {
+      if ($scope.markDragCallback) {
+        $scope.markDragCallback({
+          mark: this
+        });
+      }
+    });
+
+    $scope.markers = marks;
   };
 
   var loadIcons = function() {
@@ -187,7 +208,6 @@ angular.module("CourseCalculator")
       zoom: zoom,
       streetViewControl: false
     });
-
 
     loadIcons();
     createLocationMarkers($scope);
@@ -241,19 +261,10 @@ angular.module("CourseCalculator")
       if (!$scope.course)
         return;
 
-      $scope.markers = createMarks($scope.course);
+      createMarks($scope);
 
       // The line of the course
       $scope.lines = createLines($scope.course);
-
-      // Add everything to the map
-      angular.forEach($scope.markers, function(item, index) {
-        item.setMap($scope.map);
-        item.addListener("click", function(e) {
-          if ($scope.markClickCallback)
-            $scope.markClickCallback({mark: this.courseMark});
-        });
-      });
       angular.forEach($scope.lines, function(item, index) {
         item.setMap($scope.map);
       });
@@ -328,6 +339,7 @@ angular.module("CourseCalculator")
 
     scope: {
       course: "=course",
+      markDragCallback: "&markDrag",
       markClickCallback: "&markClick",
       position: "=position"
     }

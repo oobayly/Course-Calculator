@@ -444,6 +444,31 @@ angular.module("CourseCalculator.controllers")
     });
   };
   
+  // Called when a mark on the chart is dragged
+  $scope.onMarkDrag = function(mark) {
+    // Prompt the user to navigate to that marker
+    $ionicPopup.confirm({
+      title: "Move committee vessel",
+      template: "Do you want to move the committee vessel to this location?",
+      okText: "Yes",
+      cancelText: "No"
+    }).then(function(result) {
+      if (result) {
+        $timeout(function() {
+          $scope.configuration.course.startPosition.lat = mark.position.lat();
+          $scope.configuration.course.startPosition.lon = mark.position.lng();
+        });
+      } else {
+        // Move the marker back to the courseMark position
+        mark.setPosition({
+          lat: mark.courseMark.wgs.lat,
+          lng: mark.courseMark.wgs.lon
+        });
+
+      }
+    });
+  };
+
   // Called when a tab is selected
   $scope.onTabSelect = function($event) {
     var index = $ionicTabsDelegate.selectedIndex();
@@ -531,18 +556,7 @@ angular.module("CourseCalculator.controllers")
     if ($ionicTabsDelegate.selectedIndex() == $scope.tabs.indexOf("gps"))
       $scope.$apply("gps");
   };
-  
-  // Saves the current configuration
-  $scope.saveConfiguration = function() {
-    var configuration = $scope.configuration;
-    
-    // Don't serialise the class or course type hash keys
-    delete configuration.fleet.class["$$hashKey"];
-    delete configuration.course.type["$$hashKey"];
-    
-    $window.localStorage.setItem("configuration", JSON.stringify($scope.configuration));
-  };
-  
+
   // Shows an error dialog
   $scope.showError = function(params) {
     params.title = params.title || "An error occurred";
